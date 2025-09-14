@@ -1,117 +1,135 @@
-import PetCard from "./PetCard";
-import goldenRetriever from "@/assets/pets/golden-retriever.jpg";
-import orangeTabby from "@/assets/pets/orange-tabby.jpg";
-import borderCollie from "@/assets/pets/border-collie.jpg";
-import persianCat from "@/assets/pets/persian-cat.jpg";
-import beagle from "@/assets/pets/beagle.jpg";
-import calicoCat from "@/assets/pets/calico-cat.jpg";
+import { useState, useEffect } from 'react';
+import PetCard from './PetCard';
+import { supabase } from '@/integrations/supabase/client';
 
-const mockPets = [
-  {
-    id: "1",
-    name: "Buddy",
-    type: "Dog",
-    breed: "Golden Retriever",
-    age: "2Y",
-    gender: "Male" as const,
-    location: "New York",
-    image: goldenRetriever,
-    description: "Friendly and energetic golden retriever looking for an active family. Loves playing fetch and swimming.",
-  },
-  {
-    id: "2",
-    name: "Luna",
-    type: "Cat",
-    breed: "Orange Tabby",
-    age: "1Y",
-    gender: "Female" as const,
-    location: "San Francisco",
-    image: orangeTabby,
-    description: "Playful kitten with beautiful orange fur. Loves to chase toys and cuddle with her humans.",
-  },
-  {
-    id: "3",
-    name: "Max",
-    type: "Dog",
-    breed: "Border Collie",
-    age: "3Y",
-    gender: "Male" as const,
-    location: "Chicago",
-    image: borderCollie,
-    description: "Intelligent and loyal border collie. Great with kids and other pets. Needs daily exercise.",
-  },
-  {
-    id: "4",
-    name: "Princess",
-    type: "Cat",
-    breed: "Persian",
-    age: "2Y",
-    gender: "Female" as const,
-    location: "Los Angeles",
-    image: persianCat,
-    description: "Elegant Persian cat with beautiful long fur. Calm and gentle personality, perfect for quiet homes.",
-  },
-  {
-    id: "5",
-    name: "Charlie",
-    type: "Dog",
-    breed: "Beagle",
-    age: "4M",
-    gender: "Male" as const,
-    location: "Austin",
-    image: beagle,
-    description: "Adorable beagle puppy with lots of energy. Great with children and very social.",
-  },
-  {
-    id: "6",
-    name: "Patches",
-    type: "Cat",
-    breed: "Calico",
-    age: "1Y",
-    gender: "Female" as const,
-    location: "Seattle",
-    image: calicoCat,
-    description: "Beautiful calico cat with unique markings. Independent but affectionate when she trusts you.",
-  },
-];
+interface FilterState {
+  species: string;
+  age: string;
+  gender: string;
+  size: string;
+}
 
-const PetGrid = () => {
-  return (
-    <div className="flex-1">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-foreground">Recent Listings</h2>
-            <p className="text-muted-foreground">Showing 1-6 of 134 pets</p>
-          </div>
-          
-          {/* Sort Options */}
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-muted-foreground">Sort by:</span>
-            <select className="text-sm border border-border rounded-md px-3 py-1 bg-background text-foreground">
-              <option>Recently Added</option>
-              <option>Age (Youngest)</option>
-              <option>Age (Oldest)</option>
-              <option>Name (A-Z)</option>
-            </select>
-          </div>
+interface PetGridProps {
+  filters: FilterState;
+}
+
+interface Pet {
+  id: string;
+  name: string;
+  breed: string;
+  age: number;
+  gender: string;
+  species: string;
+  size: string;
+  color: string;
+  description?: string;
+  adoption_fee?: number;
+  image_url?: string;
+  is_adopted: boolean;
+}
+
+const PetGrid = ({ filters }: PetGridProps) => {
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [pets, setPets] = useState<Pet[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPets();
+  }, []);
+
+  const fetchPets = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('pets')
+        .select('*')
+        .eq('is_adopted', false)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setPets(data || []);
+    } catch (error) {
+      console.error('Error fetching pets:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleFavorite = (petId: string) => {
+    setFavorites(prev =>
+      prev.includes(petId)
+        ? prev.filter(id => id !== petId)
+        : [...prev, petId]
+    );
+  };
+
+  // Filter pets based on selected filters
+  const filteredPets = pets.filter((pet) => {
+    if (filters.species && filters.species !== 'All' && pet.species !== filters.species) {
+      return false;
+    }
+    if (filters.age && filters.age !== 'All') {
+      const ageInYears = pet.age / 12;
+      if (filters.age === 'Young' && ageInYears > 2) return false;
+      if (filters.age === 'Adult' && (ageInYears <= 2 || ageInYears > 7)) return false;
+      if (filters.age === 'Senior' && ageInYears <= 7) return false;
+    }
+    if (filters.gender && filters.gender !== 'All' && pet.gender !== filters.gender) {
+      return false;
+    }
+    if (filters.size && filters.size !== 'All' && pet.size !== filters.size) {
+      return false;
+    }
+    return true;
+  });
+
+  if (loading) {
+    return (
+      <div className="w-full">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold text-foreground">
+            Loading Pets...
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="bg-muted animate-pulse rounded-lg h-96"></div>
+          ))}
         </div>
       </div>
+    );
+  }
 
-      {/* Pet Grid */}
+  return (
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-semibold text-foreground">
+          Available Pets ({filteredPets.length})
+        </h2>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockPets.map((pet) => (
-          <PetCard key={pet.id} {...pet} />
+        {filteredPets.map((pet) => (
+          <PetCard
+            key={pet.id}
+            id={pet.id}
+            name={pet.name}
+            breed={pet.breed}
+            age={Math.floor(pet.age / 12)}
+            gender={pet.gender}
+            image={pet.image_url || '/placeholder.svg'}
+            isFavorite={favorites.includes(pet.id)}
+            onToggleFavorite={() => toggleFavorite(pet.id)}
+          />
         ))}
       </div>
 
-      {/* Load More */}
-      <div className="text-center mt-12">
-        <button className="bg-primary hover:bg-primary-dark text-primary-foreground px-8 py-3 rounded-lg transition-colors">
-          Load More Pets
-        </button>
-      </div>
+      {filteredPets.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground text-lg">
+            No pets found matching your criteria. Try adjusting your filters.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

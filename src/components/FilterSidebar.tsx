@@ -1,107 +1,96 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const FilterSidebar = () => {
+export interface FilterState {
+  species: string;
+  age: string;
+  gender: string;
+  size: string;
+}
+
+interface FilterSidebarProps {
+  filters: FilterState;
+  onFiltersChange: (filters: FilterState) => void;
+}
+
+const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
   return (
-    <div className="w-64 space-y-6">
-      {/* Pet Type */}
-      <Card className="p-4 bg-gradient-card border-border shadow-soft">
-        <h3 className="font-semibold text-foreground mb-3">Pet Type</h3>
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
-            <input type="radio" id="all-pets" name="pet-type" className="text-primary" defaultChecked />
-            <label htmlFor="all-pets" className="text-sm text-foreground">All Pets</label>
+    <div className="w-80 space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Filter Pets</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="species">Species</Label>
+            <Select value={filters.species} onValueChange={(value) => onFiltersChange({ ...filters, species: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select species" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Species</SelectItem>
+                <SelectItem value="Dog">Dogs</SelectItem>
+                <SelectItem value="Cat">Cats</SelectItem>
+                <SelectItem value="Rabbit">Rabbits</SelectItem>
+                <SelectItem value="Bird">Birds</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          <div className="flex items-center space-x-2">
-            <input type="radio" id="dogs" name="pet-type" className="text-primary" />
-            <label htmlFor="dogs" className="text-sm text-foreground">Dogs</label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <input type="radio" id="cats" name="pet-type" className="text-primary" />
-            <label htmlFor="cats" className="text-sm text-foreground">Cats</label>
-          </div>
-        </div>
-      </Card>
 
-      {/* Filters */}
-      <Card className="p-4 bg-gradient-card border-border shadow-soft">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-foreground">Filters</h3>
-          <Button variant="ghost" size="sm" className="text-primary hover:text-primary-dark">
-            Reset
+          <div className="space-y-2">
+            <Label htmlFor="age">Age</Label>
+            <Select value={filters.age} onValueChange={(value) => onFiltersChange({ ...filters, age: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select age" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Ages</SelectItem>
+                <SelectItem value="Young">Young (0-2 years)</SelectItem>
+                <SelectItem value="Adult">Adult (2-7 years)</SelectItem>
+                <SelectItem value="Senior">Senior (7+ years)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="gender">Gender</Label>
+            <Select value={filters.gender} onValueChange={(value) => onFiltersChange({ ...filters, gender: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Genders</SelectItem>
+                <SelectItem value="Male">Male</SelectItem>
+                <SelectItem value="Female">Female</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="size">Size</Label>
+            <Select value={filters.size} onValueChange={(value) => onFiltersChange({ ...filters, size: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Sizes</SelectItem>
+                <SelectItem value="Small">Small</SelectItem>
+                <SelectItem value="Medium">Medium</SelectItem>
+                <SelectItem value="Large">Large</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Button 
+            onClick={() => onFiltersChange({ species: 'All', age: 'All', gender: 'All', size: 'All' })}
+            variant="outline" 
+            className="w-full"
+          >
+            Clear Filters
           </Button>
-        </div>
-
-        <div className="space-y-4">
-          {/* Age */}
-          <div>
-            <h4 className="text-sm font-medium text-foreground mb-2">Age</h4>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="puppy" className="text-primary" />
-                <label htmlFor="puppy" className="text-sm text-foreground">Puppy/Kitten</label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="young" className="text-primary" />
-                <label htmlFor="young" className="text-sm text-foreground">Young</label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="adult" className="text-primary" />
-                <label htmlFor="adult" className="text-sm text-foreground">Adult</label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="senior" className="text-primary" />
-                <label htmlFor="senior" className="text-sm text-foreground">Senior</label>
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Gender */}
-          <div>
-            <h4 className="text-sm font-medium text-foreground mb-2">Gender</h4>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="male" className="text-primary" />
-                <label htmlFor="male" className="text-sm text-foreground">Male</label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="female" className="text-primary" />
-                <label htmlFor="female" className="text-sm text-foreground">Female</label>
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Health Status */}
-          <div>
-            <h4 className="text-sm font-medium text-foreground mb-2">Health Status</h4>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="vaccinated" className="text-primary" />
-                <label htmlFor="vaccinated" className="text-sm text-foreground">Vaccinated</label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="sterilized" className="text-primary" />
-                <label htmlFor="sterilized" className="text-sm text-foreground">Sterilized</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {/* Active Filters */}
-      <Card className="p-4 bg-gradient-card border-border shadow-soft">
-        <h3 className="font-semibold text-foreground mb-3">Active Filters</h3>
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            All Pets
-          </Badge>
-        </div>
+        </CardContent>
       </Card>
     </div>
   );

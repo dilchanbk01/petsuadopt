@@ -2,10 +2,12 @@ import { Search, Heart, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useUserRole } from '@/hooks/useUserRole';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Header = () => {
   const { user, signOut } = useAuth();
+  const { isAdmin } = useUserRole();
   const navigate = useNavigate();
 
   const handleAuthAction = () => {
@@ -54,12 +56,17 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="flex items-center space-x-6">
-            <Button variant="ghost" className="text-foreground hover:text-primary">
-              Dogs
-            </Button>
-            <Button variant="ghost" className="text-foreground hover:text-primary">
-              Cats
-            </Button>
+            <Link to="/" className="text-foreground hover:text-primary transition-colors">
+              Home
+            </Link>
+            <Link to="/about" className="text-foreground hover:text-primary transition-colors">
+              About
+            </Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-foreground hover:text-primary transition-colors">
+                Admin
+              </Link>
+            )}
             <Button variant="outline" size="sm" onClick={handleAuthAction}>
               {user ? (
                 <>

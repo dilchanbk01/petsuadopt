@@ -1,5 +1,6 @@
 import { Heart, Users, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
@@ -22,8 +23,8 @@ const HeroSection = () => {
             <Button size="lg" className="bg-gradient-primary hover:bg-primary-dark text-lg px-8 py-3">
               Start Adopting
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-3">
-              List a Pet
+            <Button variant="outline" size="lg" className="text-lg px-8 py-3" asChild>
+              <Link to="/about">Learn More</Link>
             </Button>
           </div>
 
