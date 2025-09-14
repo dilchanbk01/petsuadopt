@@ -1,22 +1,10 @@
-import { Search, Heart, User, LogOut } from "lucide-react";
+import { Search, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAuth } from '@/hooks/useAuth';
-import { useUserRole } from '@/hooks/useUserRole';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Header = () => {
-  const { user, signOut } = useAuth();
-  const { isAdmin } = useUserRole();
   const navigate = useNavigate();
-
-  const handleAuthAction = () => {
-    if (user) {
-      signOut();
-    } else {
-      navigate('/auth');
-    }
-  };
 
   return (
     <header className="bg-card border-b border-border shadow-soft sticky top-0 z-50">
@@ -62,29 +50,9 @@ const Header = () => {
             <Link to="/about" className="text-foreground hover:text-primary transition-colors">
               About
             </Link>
-            {isAdmin && (
-              <Link to="/admin" className="text-foreground hover:text-primary transition-colors">
-                Admin
-              </Link>
-            )}
-            <Button variant="outline" size="sm" onClick={handleAuthAction}>
-              {user ? (
-                <>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
-                </>
-              ) : (
-                <>
-                  <User className="h-4 w-4 mr-2" />
-                  Sign In
-                </>
-              )}
+            <Button variant="outline" size="sm">
+              Contact
             </Button>
-            {user && (
-              <span className="text-sm text-muted-foreground hidden md:block">
-                {user.email}
-              </span>
-            )}
           </nav>
         </div>
       </div>
