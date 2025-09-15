@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Navigate } from 'react-router-dom';
-import { PlusCircle, Users, Heart } from 'lucide-react';
+import { PlusCircle, Users, Heart, ArrowLeft } from 'lucide-react';
+import logoImage from '@/assets/logo.png';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -35,7 +36,7 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pet-orange mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
@@ -101,10 +102,31 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="bg-card border-b border-border shadow-soft">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-foreground">Petsu Adopt</h1>
+                <p className="text-xs text-muted-foreground">Admin Dashboard</p>
+              </div>
+            </div>
+            <Button variant="outline" onClick={() => window.location.href = '/'}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Home
+            </Button>
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Manage pets and adoption records</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Pet Management</h1>
+          <p className="text-muted-foreground">Add and manage pets available for adoption</p>
         </div>
 
         {/* Stats Cards */}
@@ -284,7 +306,7 @@ const AdminDashboard = () => {
                 />
               </div>
 
-              <Button type="submit" disabled={submitting} className="w-full">
+              <Button type="submit" disabled={submitting} className="w-full bg-gradient-primary hover:bg-primary-dark">
                 {submitting ? 'Adding Pet...' : 'Add Pet'}
               </Button>
             </form>
