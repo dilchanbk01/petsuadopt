@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useUserRole } from '@/hooks/useUserRole';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,15 +8,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Navigate } from 'react-router-dom';
-import { PlusCircle, Users, Heart, ArrowLeft } from 'lucide-react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { PlusCircle, Users, Heart, ArrowLeft, LogOut } from 'lucide-react';
 import logoImage from '@/assets/logo.png';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
-  const { isAdmin, loading } = useUserRole();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [submitting, setSubmitting] = useState(false);
+  const [stats, setStats] = useState({ total: 0, adopted: 0, available: 0 });
   const [formData, setFormData] = useState({
     name: '',
     species: '',
@@ -32,19 +32,33 @@ const AdminDashboard = () => {
     image_url: ''
   });
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (user) {
+      fetchStats();
+    }
+  }, [user]);
 
-  if (!user || !isAdmin) {
-    return <Navigate to="/" replace />;
+  const fetchStats = async () => {
+    try {
+      const { data: allPets } = await supabase.from('pets').select('is_adopted');
+      if (allPets) {
+        const total = allPets.length;
+        const adopted = allPets.filter(pet => pet.is_adopted).length;
+        const available = total - adopted;
+        setStats({ total, adopted, available });
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/admin-auth');
+  };
+
+  if (!user) {
+    return <Navigate to="/admin-auth" replace />;
   }
 
   const handleInputChange = (field: string, value: string) => {
@@ -88,6 +102,9 @@ const AdminDashboard = () => {
         adoption_fee: '',
         image_url: ''
       });
+
+      // Refresh stats
+      fetchStats();
     } catch (error) {
       console.error('Error adding pet:', error);
       toast({
@@ -115,10 +132,16 @@ const AdminDashboard = () => {
                 <p className="text-xs text-muted-foreground">Admin Dashboard</p>
               </div>
             </div>
-            <Button variant="outline" onClick={() => window.location.href = '/'}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
+            <div className="flex items-center space-x-3">
+              <Button variant="outline" onClick={() => navigate('/')}>
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Home
+              </Button>
+              <Button variant="outline" onClick={handleSignOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -137,30 +160,30 @@ const AdminDashboard = () => {
               <Heart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
-              <p className="text-xs text-muted-foreground">Available for adoption</p>
+              <div className="text-2xl font-bold">{stats.total}</div>
+              <p className="text-xs text-muted-foreground">In the system</p>
             </CardContent>
           </Card>
           
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Available</CardTitle>
+              <PlusCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.available}</div>
+              <p className="text-xs text-muted-foreground">Ready for adoption</p>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Adopted</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">8</div>
+              <div className="text-2xl font-bold">{stats.adopted}</div>
               <p className="text-xs text-muted-foreground">Happy families</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">New This Week</CardTitle>
-              <PlusCircle className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">3</div>
-              <p className="text-xs text-muted-foreground">New arrivals</p>
             </CardContent>
           </Card>
         </div>
