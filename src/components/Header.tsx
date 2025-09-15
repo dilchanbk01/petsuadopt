@@ -1,7 +1,8 @@
-import { Search, Heart } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import logoImage from '@/assets/logo.png';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -12,11 +13,11 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Heart className="w-6 h-6 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+              <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">PawsHome</h1>
+              <h1 className="text-xl font-bold text-foreground">Petsu Adopt</h1>
               <p className="text-xs text-muted-foreground">Find Your Family</p>
             </div>
           </div>
@@ -44,12 +45,6 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="flex items-center space-x-6">
-            <Link to="/" className="text-foreground hover:text-primary transition-colors">
-              Home
-            </Link>
-            <Link to="/about" className="text-foreground hover:text-primary transition-colors">
-              About
-            </Link>
             <Button variant="outline" size="sm">
               Contact
             </Button>

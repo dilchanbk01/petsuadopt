@@ -28,32 +28,6 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Heart className="w-6 h-6 text-primary" />
-              </div>
-              <div className="text-3xl font-bold text-foreground">1,247</div>
-              <div className="text-sm text-muted-foreground">Pets Adopted</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-              <div className="text-3xl font-bold text-foreground">856</div>
-              <div className="text-sm text-muted-foreground">Happy Families</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Home className="w-6 h-6 text-primary" />
-              </div>
-              <div className="text-3xl font-bold text-foreground">134</div>
-              <div className="text-sm text-muted-foreground">Available Now</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
