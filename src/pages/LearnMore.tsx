@@ -7,6 +7,7 @@ import { ArrowLeft, Heart, Calendar, Palette, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useEffect, useState } from 'react';
 import logoImage from '@/assets/logo.png';
+import AdoptionForm from '@/components/AdoptionForm';
 
 interface Pet {
   id: string;
@@ -211,12 +212,14 @@ const LearnMore = () => {
               {/* Adoption Button */}
               {!pet.is_adopted && (
                 <div className="pt-4">
-                  <Button className="w-full bg-gradient-primary hover:bg-primary-dark text-lg py-6">
-                    <Heart className="w-5 h-5 mr-2" />
-                    Adopt {pet.name}
-                  </Button>
+                  <AdoptionForm petId={pet.id} petName={pet.name}>
+                    <Button className="w-full bg-gradient-primary hover:bg-primary-dark text-lg py-6">
+                      <Heart className="w-5 h-5 mr-2" />
+                      Adopt {pet.name}
+                    </Button>
+                  </AdoptionForm>
                   <p className="text-center text-xs text-muted-foreground mt-2">
-                    Contact us to start the adoption process
+                    Fill out the adoption form to get started
                   </p>
                 </div>
               )}

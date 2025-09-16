@@ -14,6 +14,56 @@ export type Database = {
   }
   public: {
     Tables: {
+      adoption_requests: {
+        Row: {
+          adopter_address: string | null
+          adopter_email: string
+          adopter_name: string
+          adopter_phone: string
+          adoption_reason: string | null
+          created_at: string
+          experience_with_pets: string | null
+          id: string
+          pet_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          adopter_address?: string | null
+          adopter_email: string
+          adopter_name: string
+          adopter_phone: string
+          adoption_reason?: string | null
+          created_at?: string
+          experience_with_pets?: string | null
+          id?: string
+          pet_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          adopter_address?: string | null
+          adopter_email?: string
+          adopter_name?: string
+          adopter_phone?: string
+          adoption_reason?: string | null
+          created_at?: string
+          experience_with_pets?: string | null
+          id?: string
+          pet_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "adoption_requests_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pets: {
         Row: {
           adoption_fee: number | null

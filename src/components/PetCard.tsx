@@ -23,6 +23,7 @@ const PetCard = ({ id, name, breed, age, gender, image, isFavorite, onToggleFavo
           src={image}
           alt={`${name} - ${breed}`}
           className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
         />
         
         {/* Gender Badge */}

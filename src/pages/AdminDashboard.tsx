@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { PlusCircle, Users, Heart, ArrowLeft, LogOut, Trash2 } from 'lucide-react';
+import { PlusCircle, Users, Heart, ArrowLeft, LogOut, Trash2, MessageCircle, CheckCircle, XCircle } from 'lucide-react';
 import logoImage from '@/assets/logo.png';
+import EditPetForm from '@/components/EditPetForm';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
   const [submitting, setSubmitting] = useState(false);
   const [stats, setStats] = useState({ total: 0, adopted: 0, available: 0 });
   const [pets, setPets] = useState([]);
+  const [adoptionRequests, setAdoptionRequests] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     species: '',
@@ -35,6 +37,7 @@ const AdminDashboard = () => {
     if (user) {
       fetchStats();
       fetchPets();
+      fetchAdoptionRequests();
     }
   }, [user]);
 
@@ -87,6 +90,48 @@ const AdminDashboard = () => {
       toast({
         title: "Error",
         description: "Failed to delete pet. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const fetchAdoptionRequests = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('adoption_requests')
+        .select(`
+          *,
+          pets (name, breed, species)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setAdoptionRequests(data || []);
+    } catch (error) {
+      console.error('Error fetching adoption requests:', error);
+    }
+  };
+
+  const updateAdoptionStatus = async (requestId: string, status: string) => {
+    try {
+      const { error } = await supabase
+        .from('adoption_requests')
+        .update({ status })
+        .eq('id', requestId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: `Adoption request ${status} successfully.`,
+      });
+
+      fetchAdoptionRequests();
+    } catch (error) {
+      console.error('Error updating adoption request:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update adoption request. Please try again.",
         variant: "destructive"
       });
     }
@@ -171,7 +216,7 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-lg flex items-center justify-center">
-                <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" />
+                <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" loading="lazy" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-foreground">Petsu Adopt</h1>
@@ -199,7 +244,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Pets</CardTitle>
@@ -230,6 +275,17 @@ const AdminDashboard = () => {
             <CardContent>
               <div className="text-2xl font-bold">{stats.adopted}</div>
               <p className="text-xs text-muted-foreground">Happy families</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Adoption Requests</CardTitle>
+              <MessageCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{adoptionRequests.length}</div>
+              <p className="text-xs text-muted-foreground">Pending applications</p>
             </CardContent>
           </Card>
         </div>
@@ -367,7 +423,12 @@ const AdminDashboard = () => {
                 <div key={pet.id} className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     {pet.image_url && (
-                      <img src={pet.image_url} alt={pet.name} className="w-16 h-16 object-cover rounded-lg" />
+                      <img 
+                        src={pet.image_url} 
+                        alt={pet.name} 
+                        className="w-16 h-16 object-cover rounded-lg" 
+                        loading="lazy"
+                      />
                     )}
                     <div>
                       <h3 className="font-semibold text-foreground">{pet.name}</h3>
@@ -375,19 +436,104 @@ const AdminDashboard = () => {
                       <p className="text-xs text-muted-foreground">{pet.color}</p>
                     </div>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => deletePet(pet.id)}
-                    className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Delete
-                  </Button>
+                  <div className="flex gap-2">
+                    <EditPetForm pet={pet} onPetUpdated={fetchPets} />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => deletePet(pet.id)}
+                      className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               ))}
-              {pets.length === 0 && (
-                <p className="text-center text-muted-foreground py-8">No pets added yet</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Adoption Requests */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Adoption Requests</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {adoptionRequests.map((request) => (
+                <div key={request.id} className="p-4 border border-border rounded-lg">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="font-semibold text-foreground">
+                        {request.adopter_name} wants to adopt {request.pets?.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {request.pets?.breed} • {request.pets?.species}
+                      </p>
+                      <div className="mt-2 text-sm">
+                        <p><strong>Email:</strong> {request.adopter_email}</p>
+                        <p><strong>Phone:</strong> {request.adopter_phone}</p>
+                        {request.adopter_address && (
+                          <p><strong>Address:</strong> {request.adopter_address}</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      {request.status === 'pending' && (
+                        <>
+                          <Button
+                            size="sm"
+                            onClick={() => updateAdoptionStatus(request.id, 'approved')}
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                          >
+                            <CheckCircle className="w-4 h-4 mr-1" />
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => updateAdoptionStatus(request.id, 'rejected')}
+                            className="text-red-600 border-red-600 hover:bg-red-50"
+                          >
+                            <XCircle className="w-4 h-4 mr-1" />
+                            Reject
+                          </Button>
+                        </>
+                      )}
+                      {request.status !== 'pending' && (
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${
+                          request.status === 'approved' 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-red-100 text-red-800'
+                        }`}>
+                          {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {request.adoption_reason && (
+                    <div className="mt-3 p-3 bg-muted rounded">
+                      <p className="text-sm"><strong>Why they want to adopt:</strong></p>
+                      <p className="text-sm text-muted-foreground mt-1">{request.adoption_reason}</p>
+                    </div>
+                  )}
+                  
+                  {request.experience_with_pets && (
+                    <div className="mt-3 p-3 bg-muted rounded">
+                      <p className="text-sm"><strong>Pet experience:</strong></p>
+                      <p className="text-sm text-muted-foreground mt-1">{request.experience_with_pets}</p>
+                    </div>
+                  )}
+                  
+                  <p className="text-xs text-muted-foreground mt-3">
+                    Submitted on {new Date(request.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              ))}
+              {adoptionRequests.length === 0 && (
+                <p className="text-center text-muted-foreground py-8">No adoption requests yet</p>
               )}
             </div>
           </CardContent>
