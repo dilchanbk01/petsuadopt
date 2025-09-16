@@ -14,7 +14,7 @@ interface PetCardProps {
   onToggleFavorite: () => void;
 }
 
-const PetCard = ({ name, breed, age, gender, image, isFavorite, onToggleFavorite }: PetCardProps) => {
+const PetCard = ({ id, name, breed, age, gender, image, isFavorite, onToggleFavorite }: PetCardProps) => {
   return (
     <Card className="group overflow-hidden bg-gradient-card border-border shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
       {/* Image Container */}
@@ -65,7 +65,10 @@ const PetCard = ({ name, breed, age, gender, image, isFavorite, onToggleFavorite
 
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
-          <Button className="flex-1 bg-gradient-primary hover:bg-primary-dark">
+          <Button 
+            className="flex-1 bg-gradient-primary hover:bg-primary-dark"
+            onClick={() => window.location.href = `/learn-more/${id}`}
+          >
             Learn More
           </Button>
           <Button variant="outline" size="icon" onClick={onToggleFavorite}>

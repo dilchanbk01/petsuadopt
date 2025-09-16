@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { PlusCircle, Users, Heart, ArrowLeft, LogOut } from 'lucide-react';
+import { PlusCircle, Users, Heart, ArrowLeft, LogOut, Trash2 } from 'lucide-react';
 import logoImage from '@/assets/logo.png';
 
 const AdminDashboard = () => {
@@ -18,23 +18,23 @@ const AdminDashboard = () => {
   const { toast } = useToast();
   const [submitting, setSubmitting] = useState(false);
   const [stats, setStats] = useState({ total: 0, adopted: 0, available: 0 });
+  const [pets, setPets] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     species: '',
     breed: '',
     age: '',
     gender: '',
-    size: '',
     color: '',
     description: '',
     medical_history: '',
-    adoption_fee: '',
     image_url: ''
   });
 
   useEffect(() => {
     if (user) {
       fetchStats();
+      fetchPets();
     }
   }, [user]);
 
@@ -49,6 +49,46 @@ const AdminDashboard = () => {
       }
     } catch (error) {
       console.error('Error fetching stats:', error);
+    }
+  };
+
+  const fetchPets = async () => {
+    try {
+      const { data: allPets } = await supabase
+        .from('pets')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (allPets) {
+        setPets(allPets);
+      }
+    } catch (error) {
+      console.error('Error fetching pets:', error);
+    }
+  };
+
+  const deletePet = async (petId: string) => {
+    try {
+      const { error } = await supabase
+        .from('pets')
+        .delete()
+        .eq('id', petId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Pet has been deleted successfully.",
+      });
+
+      fetchStats();
+      fetchPets();
+    } catch (error) {
+      console.error('Error deleting pet:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete pet. Please try again.",
+        variant: "destructive"
+      });
     }
   };
 
@@ -71,15 +111,22 @@ const AdminDashboard = () => {
 
     try {
       const petData = {
-        ...formData,
+        name: formData.name,
+        species: formData.species,
+        breed: formData.breed,
         age: parseInt(formData.age),
-        adoption_fee: formData.adoption_fee ? parseFloat(formData.adoption_fee) : null,
+        gender: formData.gender,
+        size: 'Medium', // Default size since we removed the field
+        color: formData.color,
+        description: formData.description,
+        medical_history: formData.medical_history,
+        image_url: formData.image_url,
         created_by: user.id
       };
 
       const { error } = await supabase
         .from('pets')
-        .insert([petData]);
+        .insert(petData);
 
       if (error) throw error;
 
@@ -95,16 +142,15 @@ const AdminDashboard = () => {
         breed: '',
         age: '',
         gender: '',
-        size: '',
         color: '',
         description: '',
         medical_history: '',
-        adoption_fee: '',
         image_url: ''
       });
 
-      // Refresh stats
+      // Refresh stats and pets list
       fetchStats();
+      fetchPets();
     } catch (error) {
       console.error('Error adding pet:', error);
       toast({
@@ -260,20 +306,6 @@ const AdminDashboard = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="size">Size *</Label>
-                  <Select value={formData.size} onValueChange={(value) => handleInputChange('size', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Small">Small</SelectItem>
-                      <SelectItem value="Medium">Medium</SelectItem>
-                      <SelectItem value="Large">Large</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
                   <Label htmlFor="color">Color *</Label>
                   <Input
                     id="color"
@@ -281,18 +313,6 @@ const AdminDashboard = () => {
                     onChange={(e) => handleInputChange('color', e.target.value)}
                     placeholder="Enter color"
                     required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="adoption_fee">Adoption Fee ($)</Label>
-                  <Input
-                    id="adoption_fee"
-                    type="number"
-                    step="0.01"
-                    value={formData.adoption_fee}
-                    onChange={(e) => handleInputChange('adoption_fee', e.target.value)}
-                    placeholder="Enter adoption fee"
                   />
                 </div>
               </div>
@@ -333,6 +353,43 @@ const AdminDashboard = () => {
                 {submitting ? 'Adding Pet...' : 'Add Pet'}
               </Button>
             </form>
+          </CardContent>
+        </Card>
+
+        {/* Pets List */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Manage Pets</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {pets.map((pet) => (
+                <div key={pet.id} className="flex items-center justify-between p-4 border border-border rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    {pet.image_url && (
+                      <img src={pet.image_url} alt={pet.name} className="w-16 h-16 object-cover rounded-lg" />
+                    )}
+                    <div>
+                      <h3 className="font-semibold text-foreground">{pet.name}</h3>
+                      <p className="text-sm text-muted-foreground">{pet.breed} • {pet.species} • {pet.age} months • {pet.gender}</p>
+                      <p className="text-xs text-muted-foreground">{pet.color}</p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => deletePet(pet.id)}
+                    className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </Button>
+                </div>
+              ))}
+              {pets.length === 0 && (
+                <p className="text-center text-muted-foreground py-8">No pets added yet</p>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>
