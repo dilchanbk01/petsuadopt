@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Header from '@/components/Header';
-import HeroSection from '@/components/HeroSection';
+import HeroBanner from '@/components/HeroBanner';
 import FilterSidebar, { type FilterState } from '@/components/FilterSidebar';
 import PetGrid from '@/components/PetGrid';
 import Footer from '@/components/Footer';
@@ -16,13 +16,17 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <HeroSection />
+      <HeroBanner />
       
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="flex gap-8">
-          <FilterSidebar filters={filters} onFiltersChange={setFilters} />
-          <PetGrid filters={filters} />
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          <div className="lg:w-80 flex-shrink-0">
+            <FilterSidebar filters={filters} onFiltersChange={setFilters} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <PetGrid filters={filters} />
+          </div>
         </div>
       </div>
       

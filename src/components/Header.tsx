@@ -8,7 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-card border-b border-border shadow-soft sticky top-0 z-50">
+    <header className="bg-header-brand border-b border-border shadow-soft sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -17,36 +17,40 @@ const Header = () => {
               <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">Petsu Adopt</h1>
-              <p className="text-xs text-muted-foreground">Find Your Family</p>
+              <h1 className="text-xl font-bold text-white">Petsu Adopt</h1>
+              <p className="text-xs text-white/80">Find Your Family</p>
             </div>
           </div>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-8">
-            <div className="flex gap-2">
+          {/* Search Bar - Hidden on mobile */}
+          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
+            <div className="flex gap-2 w-full">
               <div className="flex-1 relative">
                 <Input
                   placeholder="What are you looking for? (e.g., Golden Retriever)"
-                  className="pr-4"
+                  className="pr-4 bg-white/10 border-white/20 text-white placeholder:text-white/70"
                 />
               </div>
               <div className="w-48 relative">
                 <Input
                   placeholder="Location"
-                  className="pr-4"
+                  className="pr-4 bg-white/10 border-white/20 text-white placeholder:text-white/70"
                 />
               </div>
-              <Button variant="default" size="icon" className="bg-gradient-primary hover:bg-primary-dark">
+              <Button variant="default" size="icon" className="bg-white/20 hover:bg-white/30 text-white">
                 <Search className="w-4 h-4" />
               </Button>
             </div>
           </div>
 
           {/* Navigation */}
-          <nav className="flex items-center space-x-6">
-            <Button variant="outline" size="sm">
+          <nav className="flex items-center space-x-2 md:space-x-6">
+            <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10">
               Contact
+            </Button>
+            {/* Mobile Search Button */}
+            <Button variant="ghost" size="sm" className="md:hidden text-white hover:bg-white/10">
+              <Search className="w-4 h-4" />
             </Button>
           </nav>
         </div>

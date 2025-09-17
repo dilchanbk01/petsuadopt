@@ -23,6 +23,9 @@
     --primary-foreground: 0 0% 100%;
     --primary-light: 155 90% 49%;
     --primary-dark: 155 80% 29%;
+    
+    /* Header Brand Color */
+    --header-brand: 139 100% 38%;
 
     /* Secondary Colors - Soft Earth Tones */
     --secondary: 45 25% 94%;
@@ -102,6 +105,9 @@
     --primary-foreground: 0 0% 100%;
     --primary-light: 155 90% 49%;
     --primary-dark: 155 80% 29%;
+    
+    /* Header Brand Color */
+    --header-brand: 139 100% 38%;
 
     --secondary: 25 15% 18%;
     --secondary-foreground: 45 20% 85%;
