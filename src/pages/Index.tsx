@@ -21,7 +21,7 @@ const Index = () => {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <div className="lg:w-80 flex-shrink-0">
+          <div className="lg:w-80 lg:flex-shrink-0">
             <FilterSidebar filters={filters} onFiltersChange={setFilters} />
           </div>
           <div className="flex-1 min-w-0">

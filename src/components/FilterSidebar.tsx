@@ -2,6 +2,10 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronDown, Filter } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useState } from 'react';
 
 export interface FilterState {
   species: string;
@@ -16,13 +20,11 @@ interface FilterSidebarProps {
 }
 
 const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
-  return (
-    <div className="w-80 space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Filter Pets</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+  const isMobile = useIsMobile();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const filterContent = (
+    <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="species">Species</Label>
             <Select value={filters.species} onValueChange={(value) => onFiltersChange({ ...filters, species: value })}>
@@ -83,13 +85,49 @@ const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
             </Select>
           </div>
 
-          <Button 
-            onClick={() => onFiltersChange({ species: 'All', age: 'All', gender: 'All', size: 'All' })}
-            variant="outline" 
-            className="w-full"
-          >
-            Clear Filters
-          </Button>
+      <Button 
+        onClick={() => onFiltersChange({ species: 'All', age: 'All', gender: 'All', size: 'All' })}
+        variant="outline" 
+        className="w-full"
+      >
+        Clear Filters
+      </Button>
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <div className="w-full mb-4">
+        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+          <CollapsibleTrigger asChild>
+            <Button variant="outline" className="w-full flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4" />
+                Filter Pets
+              </div>
+              <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <Card className="mt-2">
+              <CardContent className="pt-4">
+                {filterContent}
+              </CardContent>
+            </Card>
+          </CollapsibleContent>
+        </Collapsible>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-80 space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Filter Pets</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {filterContent}
         </CardContent>
       </Card>
     </div>

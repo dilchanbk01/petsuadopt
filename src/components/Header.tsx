@@ -28,13 +28,13 @@ const Header = () => {
               <div className="flex-1 relative">
                 <Input
                   placeholder="What are you looking for? (e.g., Golden Retriever)"
-                  className="pr-4 bg-white/10 border-white/20 text-white placeholder:text-white/70"
+                  className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
                 />
               </div>
               <div className="w-48 relative">
                 <Input
                   placeholder="Location"
-                  className="pr-4 bg-white/10 border-white/20 text-white placeholder:text-white/70"
+                  className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
                 />
               </div>
               <Button variant="default" size="icon" className="bg-white/20 hover:bg-white/30 text-white">
