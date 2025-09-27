@@ -1,8 +1,6 @@
 import { Heart, Mail, Phone, MapPin } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer className="bg-card border-t border-border mt-16">
+  return <footer className="bg-card border-t border-border mt-16">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
@@ -12,7 +10,7 @@ const Footer = () => {
                 <Heart className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-foreground">PawsHome</h1>
+                <h1 className="text-xl font-bold text-foreground">Petsu Adopt</h1>
                 <p className="text-xs text-muted-foreground">Find Your Family</p>
               </div>
             </div>
@@ -59,8 +57,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
