@@ -4,6 +4,7 @@ import HeroBanner from '@/components/HeroBanner';
 import FilterSidebar, { type FilterState } from '@/components/FilterSidebar';
 import PetGrid from '@/components/PetGrid';
 import Footer from '@/components/Footer';
+import BottomNavigation from '@/components/BottomNavigation';
 
 const Index = () => {
   const [filters, setFilters] = useState<FilterState>({
@@ -14,7 +15,7 @@ const Index = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 md:pb-0">
       <Header />
       <HeroBanner />
       
@@ -31,6 +32,7 @@ const Index = () => {
       </div>
       
       <Footer />
+      <BottomNavigation />
     </div>
   );
 };
