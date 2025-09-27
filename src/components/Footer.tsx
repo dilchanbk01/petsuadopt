@@ -5,18 +5,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <Heart className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground">Petsu Adopt</h1>
-                <p className="text-xs text-muted-foreground">Find Your Family</p>
-              </div>
-            </div>
-            <p className="text-muted-foreground max-w-md">
-              Connecting loving pets with caring families. Every adoption saves a life and creates lasting bonds of love and companionship.
-            </p>
+            
+            <p className="text-muted-foreground max-w-md">Connecting loving pets with caring families. Every adoption saves a life and creates lasting bonds of love and companionship. We do not sell we just help you to find pet for adoptation</p>
           </div>
 
           {/* Quick Links */}

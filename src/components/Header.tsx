@@ -28,9 +28,7 @@ const Header = () => {
               <div className="w-48 relative">
                 <Input placeholder="Location" className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500" />
               </div>
-              <Button variant="default" size="icon" className="bg-white/20 hover:bg-white/30 text-white">
-                <Search className="w-4 h-4" />
-              </Button>
+              
             </div>
           </div>
 
