@@ -41,11 +41,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-border mt-8 pt-8 text-center">
-          <p className="text-muted-foreground">
-            © 2024 PawsHome. Made with ❤️ for pets and their families.
-          </p>
-        </div>
+        
       </div>
     </footer>;
 };

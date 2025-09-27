@@ -59,9 +59,7 @@ const PetCard = ({
           <Button className="flex-1 bg-gradient-primary hover:bg-primary-dark" onClick={() => window.location.href = `/learn-more/${id}`}>
             Learn More
           </Button>
-          <Button variant="outline" size="icon" onClick={onToggleFavorite}>
-            <Heart className={`w-4 h-4 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
-          </Button>
+          
         </div>
       </div>
     </Card>;
