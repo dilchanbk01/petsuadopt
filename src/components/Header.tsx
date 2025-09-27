@@ -3,12 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from 'react-router-dom';
 import logoImage from '@/assets/logo.png';
-
 const Header = () => {
   const navigate = useNavigate();
-
-  return (
-    <header className="bg-header-brand border-b border-border shadow-soft sticky top-0 z-50">
+  return <header className="bg-header-brand border-b border-border shadow-soft sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -26,16 +23,10 @@ const Header = () => {
           <div className="hidden md:flex flex-1 max-w-2xl mx-8">
             <div className="flex gap-2 w-full">
               <div className="flex-1 relative">
-                <Input
-                  placeholder="What are you looking for? (e.g., Golden Retriever)"
-                  className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
-                />
+                <Input placeholder="What are you looking for? (e.g., Golden Retriever)" className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500" />
               </div>
               <div className="w-48 relative">
-                <Input
-                  placeholder="Location"
-                  className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
-                />
+                <Input placeholder="Location" className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500" />
               </div>
               <Button variant="default" size="icon" className="bg-white/20 hover:bg-white/30 text-white">
                 <Search className="w-4 h-4" />
@@ -45,7 +36,7 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="flex items-center space-x-2 md:space-x-6">
-            <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10">
+            <Button variant="outline" size="sm" className="border-white/20 text-slate-800 bg-slate-50">
               Contact
             </Button>
             {/* Mobile Search Button */}
@@ -55,8 +46,6 @@ const Header = () => {
           </nav>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Header;
