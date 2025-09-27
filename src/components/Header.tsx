@@ -40,7 +40,7 @@ const Header = () => {
               Contact
             </Button>
             {/* Mobile Search Button */}
-            <Button variant="ghost" size="sm" className="md:hidden text-white hover:bg-white/10">
+            <Button variant="ghost" size="sm" className="md:hidden bg-slate-50 text-slate-800">
               <Search className="w-4 h-4" />
             </Button>
           </nav>
