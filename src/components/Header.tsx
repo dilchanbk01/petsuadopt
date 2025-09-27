@@ -1,58 +1,58 @@
-import { User } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useNavigate } from 'react-router-dom';
+import logoImage from '@/assets/logo.png';
 
 const Header = () => {
   const navigate = useNavigate();
 
   return (
     <header className="bg-header-brand border-b border-border shadow-soft sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
-            <h1 className="text-2xl font-bold text-yellow-400 italic">Petsu</h1>
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+              <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">Petsu Adopt</h1>
+              <p className="text-xs text-white/80">Find Your Family</p>
+            </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <a 
-              href="https://petsu.in/vet-consultation" 
-              className="text-white hover:text-yellow-400 transition-colors font-medium"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Vet Consultation
-            </a>
-            <a 
-              href="https://petsu.in/groomers" 
-              className="text-white hover:text-yellow-400 transition-colors font-medium"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Grooming
-            </a>
-            <a 
-              href="https://petsu.in/pet-essentials" 
-              className="text-white hover:text-yellow-400 transition-colors font-medium"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Pet Essentials
-            </a>
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/about')}
-              className="text-white hover:text-yellow-400 hover:bg-white/10 font-medium"
-            >
-              Blogs
+          {/* Search Bar - Hidden on mobile */}
+          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
+            <div className="flex gap-2 w-full">
+              <div className="flex-1 relative">
+                <Input
+                  placeholder="What are you looking for? (e.g., Golden Retriever)"
+                  className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
+                />
+              </div>
+              <div className="w-48 relative">
+                <Input
+                  placeholder="Location"
+                  className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
+                />
+              </div>
+              <Button variant="default" size="icon" className="bg-white/20 hover:bg-white/30 text-white">
+                <Search className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex items-center space-x-2 md:space-x-6">
+            <Button variant="outline" size="sm" className="border-white/20 text-white hover:bg-white/10">
+              Contact
+            </Button>
+            {/* Mobile Search Button */}
+            <Button variant="ghost" size="sm" className="md:hidden text-white hover:bg-white/10">
+              <Search className="w-4 h-4" />
             </Button>
           </nav>
-
-          {/* User Icon */}
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 rounded-full">
-            <User className="w-5 h-5" />
-          </Button>
         </div>
       </div>
     </header>
