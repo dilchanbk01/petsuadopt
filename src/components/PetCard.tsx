@@ -33,9 +33,7 @@ const PetCard = ({
         </Badge>
 
         {/* Favorite Button */}
-        <Button size="icon" variant="secondary" className="absolute top-3 left-3 w-8 h-8 bg-white/80 hover:bg-white" onClick={onToggleFavorite}>
-          <Heart className={`w-4 h-4 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
-        </Button>
+        
       </div>
 
       {/* Content */}
