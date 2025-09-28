@@ -26,7 +26,7 @@ const Header = () => {
                 <Input placeholder="What are you looking for? (e.g., Golden Retriever)" className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500" />
               </div>
               <div className="w-48 relative">
-                <Input placeholder="Location" className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500" />
+                
               </div>
               
             </div>
