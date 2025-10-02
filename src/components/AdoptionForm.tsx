@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Heart, Phone, Mail, MapPin } from 'lucide-react';
+import { Heart, Phone, Mail } from 'lucide-react';
 
 interface AdoptionFormProps {
   petId: string;
@@ -21,10 +21,7 @@ const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
   const [formData, setFormData] = useState({
     adopter_name: '',
     adopter_email: '',
-    adopter_phone: '',
-    adopter_address: '',
-    adoption_reason: '',
-    experience_with_pets: ''
+    adopter_phone: ''
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -56,10 +53,7 @@ const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
       setFormData({
         adopter_name: '',
         adopter_email: '',
-        adopter_phone: '',
-        adopter_address: '',
-        adoption_reason: '',
-        experience_with_pets: ''
+        adopter_phone: ''
       });
       setOpen(false);
     } catch (error) {
@@ -131,42 +125,6 @@ const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
                 />
               </div>
             </div>
-
-            <div>
-              <Label htmlFor="adopter_address">Address</Label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="adopter_address"
-                  value={formData.adopter_address}
-                  onChange={(e) => handleInputChange('adopter_address', e.target.value)}
-                  placeholder="Enter your address"
-                  className="pl-10"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="adoption_reason">Why do you want to adopt {petName}?</Label>
-            <Textarea
-              id="adoption_reason"
-              value={formData.adoption_reason}
-              onChange={(e) => handleInputChange('adoption_reason', e.target.value)}
-              placeholder="Tell us why you'd like to adopt this pet..."
-              rows={3}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="experience_with_pets">Experience with Pets</Label>
-            <Textarea
-              id="experience_with_pets"
-              value={formData.experience_with_pets}
-              onChange={(e) => handleInputChange('experience_with_pets', e.target.value)}
-              placeholder="Tell us about your experience with pets..."
-              rows={3}
-            />
           </div>
 
           <div className="flex gap-3 pt-4">
