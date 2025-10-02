@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Heart, Calendar, Palette, User } from 'lucide-react';
+import { Heart, Calendar, Palette, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useEffect, useState } from 'react';
 import logoImage from '@/assets/logo.png';
@@ -70,7 +70,6 @@ const LearnMore = () => {
           <h2 className="text-2xl font-bold text-foreground mb-4">Pet Not Found</h2>
           <p className="text-muted-foreground mb-6">The pet you're looking for doesn't exist or has been removed.</p>
           <Button onClick={() => navigate('/')} className="bg-gradient-primary hover:bg-primary-dark">
-            <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Button>
         </div>
@@ -81,22 +80,18 @@ const LearnMore = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-card border-b border-border shadow-soft">
+      <div className="bg-header-brand border-b border-border shadow-soft">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
               <div className="w-10 h-10 rounded-lg flex items-center justify-center">
                 <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-foreground">Petsu Adopt</h1>
-                <p className="text-xs text-muted-foreground">Find your perfect companion</p>
+                <h1 className="text-xl font-bold text-white">Petsu Adopt</h1>
+                <p className="text-xs text-white/80">Find Your Family</p>
               </div>
             </div>
-            <Button variant="outline" onClick={() => navigate('/')}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
           </div>
         </div>
       </div>
