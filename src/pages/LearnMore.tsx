@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useEffect, useState } from 'react';
 import logoImage from '@/assets/logo.png';
 import AdoptionForm from '@/components/AdoptionForm';
+import BottomNavigation from '@/components/BottomNavigation';
 
 interface Pet {
   id: string;
@@ -41,7 +42,7 @@ const LearnMore = () => {
         .from('pets')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setPet(data);
@@ -78,7 +79,7 @@ const LearnMore = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20 md:pb-0">
       {/* Header */}
       <div className="bg-header-brand border-b border-border shadow-soft">
         <div className="container mx-auto px-4 py-4">
@@ -107,6 +108,7 @@ const LearnMore = () => {
                     src={pet.image_url}
                     alt={`${pet.name} - ${pet.breed}`}
                     className="w-full h-full object-cover"
+                    loading="eager"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-muted">
@@ -222,6 +224,8 @@ const LearnMore = () => {
           </div>
         </div>
       </div>
+      
+      <BottomNavigation />
     </div>
   );
 };
