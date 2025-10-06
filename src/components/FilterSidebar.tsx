@@ -13,6 +13,7 @@ export interface FilterState {
   age: string;
   gender: string;
   size: string;
+  searchQuery: string;
 }
 
 interface FilterSidebarProps {
@@ -87,7 +88,7 @@ const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
           </div>
 
       <Button 
-        onClick={() => onFiltersChange({ species: 'All', age: 'All', gender: 'All', size: 'All' })}
+        onClick={() => onFiltersChange({ species: 'All', age: 'All', gender: 'All', size: 'All', searchQuery: '' })}
         variant="outline" 
         className="w-full"
       >
@@ -98,17 +99,17 @@ const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
 
   if (isMobile) {
     return (
-      <div className="w-full mb-4 space-y-3">
-        {/* Search Bar */}
-        <div className="flex gap-2">
-          <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex-1">
+      <div className="w-full mb-4">
+        {/* Search Bar with Filter Icon */}
+        <div className="flex gap-2 items-start">
+          <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger asChild>
               <Button variant="outline" size="icon" className="shrink-0">
                 <Filter className="w-4 h-4" />
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent>
-              <Card className="mt-2">
+            <CollapsibleContent className="absolute z-10 w-full left-0 px-4 mt-2">
+              <Card>
                 <CardContent className="pt-4">
                   {filterContent}
                 </CardContent>
@@ -119,6 +120,8 @@ const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
           <div className="relative flex-1">
             <Input 
               placeholder="Search pets..." 
+              value={filters.searchQuery}
+              onChange={(e) => onFiltersChange({ ...filters, searchQuery: e.target.value })}
               className="pr-10"
             />
             <Button 

@@ -11,7 +11,8 @@ const Index = () => {
     species: 'All',
     age: 'All',
     gender: 'All',
-    size: 'All'
+    size: 'All',
+    searchQuery: ''
   });
 
   return (

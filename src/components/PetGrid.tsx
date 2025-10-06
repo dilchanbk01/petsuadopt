@@ -6,6 +6,7 @@ interface FilterState {
   age: string;
   gender: string;
   size: string;
+  searchQuery: string;
 }
 interface PetGridProps {
   filters: FilterState;
@@ -55,6 +56,18 @@ const PetGrid = ({
 
   // Filter pets based on selected filters
   const filteredPets = pets.filter(pet => {
+    // Search query filter
+    if (filters.searchQuery && filters.searchQuery.trim() !== '') {
+      const query = filters.searchQuery.toLowerCase().trim();
+      const matchesSearch = 
+        pet.name.toLowerCase().includes(query) ||
+        pet.breed.toLowerCase().includes(query) ||
+        pet.species.toLowerCase().includes(query) ||
+        (pet.description && pet.description.toLowerCase().includes(query));
+      
+      if (!matchesSearch) return false;
+    }
+    
     if (filters.species && filters.species !== 'All' && pet.species !== filters.species) {
       return false;
     }
