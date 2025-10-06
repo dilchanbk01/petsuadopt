@@ -15,6 +15,7 @@ import { useState } from "react";
 const Header = () => {
   const navigate = useNavigate();
   const [contactOpen, setContactOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   return <header className="bg-header-brand border-b border-border shadow-soft sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
@@ -44,6 +45,37 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="flex items-center space-x-2 md:space-x-6">
+            {/* Mobile Search Button - Now first */}
+            <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="md:hidden bg-slate-50 text-slate-800">
+                  <Search className="w-4 h-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Search Pets</DialogTitle>
+                  <DialogDescription>
+                    Search for your perfect pet companion
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="relative">
+                    <Input 
+                      placeholder="What are you looking for? (e.g., Golden Retriever)" 
+                      className="pr-10"
+                    />
+                    <Button 
+                      size="sm" 
+                      className="absolute right-1 top-1/2 -translate-y-1/2"
+                    >
+                      <Search className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+            
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" className="border-white/20 text-slate-800 bg-slate-50">
@@ -86,10 +118,6 @@ const Header = () => {
                 </div>
               </DialogContent>
             </Dialog>
-            {/* Mobile Search Button */}
-            <Button variant="ghost" size="sm" className="md:hidden bg-slate-50 text-slate-800">
-              <Search className="w-4 h-4" />
-            </Button>
           </nav>
         </div>
       </div>
