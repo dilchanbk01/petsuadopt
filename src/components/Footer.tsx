@@ -24,14 +24,14 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-foreground mb-4">Contact Us</h3>
             <div className="space-y-3">
-              <div className="flex items-center space-x-2">
+              <a href="tel:+15551234567" className="flex items-center space-x-2 hover:text-primary transition-colors group">
                 <Phone className="w-4 h-4 text-primary" />
-                <span className="text-muted-foreground">+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center space-x-2">
+                <span className="text-muted-foreground group-hover:text-primary">+1 (555) 123-4567</span>
+              </a>
+              <a href="mailto:hello@pawshome.com" className="flex items-center space-x-2 hover:text-primary transition-colors group">
                 <Mail className="w-4 h-4 text-primary" />
-                <span className="text-muted-foreground">hello@pawshome.com</span>
-              </div>
+                <span className="text-muted-foreground group-hover:text-primary">hello@pawshome.com</span>
+              </a>
               <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4 text-primary" />
                 <span className="text-muted-foreground">123 Pet Street, City</span>
