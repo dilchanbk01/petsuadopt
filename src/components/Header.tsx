@@ -1,4 +1,4 @@
-import { Search, Phone, Mail } from "lucide-react";
+import { Search, Phone, Mail, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from 'react-router-dom';
@@ -60,17 +60,22 @@ const Header = () => {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
-                  <div className="relative">
-                    <Input 
-                      placeholder="What are you looking for? (e.g., Golden Retriever)" 
-                      className="pr-10"
-                    />
-                    <Button 
-                      size="sm" 
-                      className="absolute right-1 top-1/2 -translate-y-1/2"
-                    >
-                      <Search className="w-4 h-4" />
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="icon" className="shrink-0">
+                      <Filter className="w-4 h-4" />
                     </Button>
+                    <div className="relative flex-1">
+                      <Input 
+                        placeholder="Search pets..." 
+                        className="pr-10"
+                      />
+                      <Button 
+                        size="sm" 
+                        className="absolute right-1 top-1/2 -translate-y-1/2 h-8"
+                      >
+                        <Search className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </DialogContent>
