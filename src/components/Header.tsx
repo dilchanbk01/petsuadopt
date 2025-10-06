@@ -45,42 +45,6 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="flex items-center space-x-2 md:space-x-6">
-            {/* Mobile Search Button - Now first */}
-            <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
-              <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="md:hidden bg-slate-50 text-slate-800">
-                  <Search className="w-4 h-4" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Search Pets</DialogTitle>
-                  <DialogDescription>
-                    Search for your perfect pet companion
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="icon" className="shrink-0">
-                      <Filter className="w-4 h-4" />
-                    </Button>
-                    <div className="relative flex-1">
-                      <Input 
-                        placeholder="Search pets..." 
-                        className="pr-10"
-                      />
-                      <Button 
-                        size="sm" 
-                        className="absolute right-1 top-1/2 -translate-y-1/2 h-8"
-                      >
-                        <Search className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-            
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" className="border-white/20 text-slate-800 bg-slate-50">

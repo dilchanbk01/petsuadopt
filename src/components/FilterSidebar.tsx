@@ -1,9 +1,10 @@
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, Filter } from 'lucide-react';
+import { ChevronDown, Filter, Search } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useState } from 'react';
 
@@ -97,25 +98,37 @@ const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
 
   if (isMobile) {
     return (
-      <div className="w-full mb-4">
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-          <CollapsibleTrigger asChild>
-            <Button variant="outline" className="w-full flex items-center justify-between">
-              <div className="flex items-center gap-2">
+      <div className="w-full mb-4 space-y-3">
+        {/* Search Bar */}
+        <div className="flex gap-2">
+          <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex-1">
+            <CollapsibleTrigger asChild>
+              <Button variant="outline" size="icon" className="shrink-0">
                 <Filter className="w-4 h-4" />
-                Filter Pets
-              </div>
-              <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <Card className="mt-2">
+                <CardContent className="pt-4">
+                  {filterContent}
+                </CardContent>
+              </Card>
+            </CollapsibleContent>
+          </Collapsible>
+          
+          <div className="relative flex-1">
+            <Input 
+              placeholder="Search pets..." 
+              className="pr-10"
+            />
+            <Button 
+              size="sm" 
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-8"
+            >
+              <Search className="w-4 h-4" />
             </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <Card className="mt-2">
-              <CardContent className="pt-4">
-                {filterContent}
-              </CardContent>
-            </Card>
-          </CollapsibleContent>
-        </Collapsible>
+          </div>
+        </div>
       </div>
     );
   }
