@@ -36,7 +36,7 @@ const Header = () => {
               <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Petsu</h1>
+              <h1 className="text-xl font-bold text-white">Petsu Adoption</h1>
             </div>
           </div>
 
