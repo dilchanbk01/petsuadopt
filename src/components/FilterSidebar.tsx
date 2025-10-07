@@ -101,10 +101,10 @@ const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
     return (
       <div className="w-full mb-4">
         {/* Search Bar with Filter Icon */}
-        <div className="flex gap-2 items-start">
+        <div className="flex gap-2 items-center">
           <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger asChild>
-              <Button variant="outline" size="icon" className="shrink-0">
+              <Button variant="outline" size="icon" className="shrink-0 h-10">
                 <Filter className="w-4 h-4" />
               </Button>
             </CollapsibleTrigger>
@@ -122,7 +122,7 @@ const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
               placeholder="Search pets..." 
               value={filters.searchQuery}
               onChange={(e) => onFiltersChange({ ...filters, searchQuery: e.target.value })}
-              className="pr-10"
+              className="pr-10 h-10"
             />
             <Button 
               size="sm" 

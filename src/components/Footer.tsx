@@ -13,10 +13,10 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Browse Pets</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Adoption Process</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Success Stories</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Pet Care Tips</a></li>
+              <li><a href="https://petsu.in/vet-consultation" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Vet Consultation</a></li>
+              <li><a href="https://petsu.in/groomers" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Grooming</a></li>
+              <li><a href="https://petsu.in/pet-essentials" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Pet Essentials</a></li>
+              <li><a href="https://petsu.in/blogs" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Blogs</a></li>
             </ul>
           </div>
 

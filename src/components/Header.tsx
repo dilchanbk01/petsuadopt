@@ -9,16 +9,16 @@ const Header = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const navItems = [{
     label: 'Vet Consultation',
-    path: '/vet-consultation'
+    url: 'https://petsu.in/vet-consultation'
   }, {
     label: 'Grooming',
-    path: '/grooming'
+    url: 'https://petsu.in/groomers'
   }, {
     label: 'Pet Essentials',
-    path: '/pet-essentials'
+    url: 'https://petsu.in/pet-essentials'
   }, {
     label: 'Blogs',
-    path: '/blogs'
+    url: 'https://petsu.in/blogs'
   }];
   return <header className="bg-header-brand shadow-soft sticky top-0 z-50 rounded-full max-w-[95%] mx-auto mt-4">
       <div className="container mx-auto px-6 py-3">
@@ -36,13 +36,15 @@ const Header = () => {
           {/* Navigation Menu - Hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-8 flex-1 justify-center">
             {navItems.map(item => (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
+              <a
+                key={item.url}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-white hover:text-white/80 transition-colors text-sm font-medium"
               >
                 {item.label}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -50,7 +52,7 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="hidden md:flex text-white hover:text-white hover:bg-white/10">
+                <Button variant="ghost" size="sm" className="text-white hover:text-white hover:bg-white/10">
                   Contact
                 </Button>
               </DialogTrigger>
