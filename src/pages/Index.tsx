@@ -5,7 +5,6 @@ import FilterSidebar, { type FilterState } from '@/components/FilterSidebar';
 import PetGrid from '@/components/PetGrid';
 import Footer from '@/components/Footer';
 import BottomNavigation from '@/components/BottomNavigation';
-
 const Index = () => {
   const [filters, setFilters] = useState<FilterState>({
     species: 'All',
@@ -14,16 +13,14 @@ const Index = () => {
     size: 'All',
     searchQuery: ''
   });
-
-  return (
-    <div className="min-h-screen bg-background pb-16 md:pb-0">
+  return <div className="min-h-screen bg-background pb-16 md:pb-0">
       <Header />
       <HeroBanner />
       
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <div className="lg:w-80 lg:flex-shrink-0">
+          <div className="lg:w-50 lg:flex-shrink-0">
             <FilterSidebar filters={filters} onFiltersChange={setFilters} />
           </div>
           <div className="flex-1 min-w-0">
@@ -34,8 +31,6 @@ const Index = () => {
       
       <Footer />
       <BottomNavigation />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
