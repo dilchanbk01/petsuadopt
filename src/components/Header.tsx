@@ -52,7 +52,7 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-white hover:text-white hover:bg-white/10">
+                <Button variant="ghost" size="sm" className="bg-white text-primary hover:bg-white/90 hover:text-primary">
                   Contact
                 </Button>
               </DialogTrigger>
