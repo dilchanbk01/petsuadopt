@@ -1,6 +1,5 @@
-import { Search, Phone, Mail, Filter } from "lucide-react";
+import { Phone, Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useNavigate } from 'react-router-dom';
 import logoImage from '@/assets/logo.png';
 import {
@@ -12,42 +11,57 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+
 const Header = () => {
   const navigate = useNavigate();
   const [contactOpen, setContactOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  return <header className="bg-header-brand border-b border-border shadow-soft sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
+
+  const navItems = [
+    { label: 'Vet Consultation', path: '/vet-consultation' },
+    { label: 'Grooming', path: '/grooming' },
+    { label: 'Pet Essentials', path: '/pet-essentials' },
+    { label: 'Blogs', path: '/blogs' },
+  ];
+
+  return (
+    <header className="bg-header-brand shadow-soft sticky top-0 z-50 rounded-full max-w-[95%] mx-auto mt-4">
+      <div className="container mx-auto px-6 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+          <div 
+            className="flex items-center space-x-3 cursor-pointer" 
+            onClick={() => navigate('/')}
+          >
             <div className="w-10 h-10 rounded-lg flex items-center justify-center">
               <img src={logoImage} alt="Petsu Adopt Logo" className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Petsu Adopt</h1>
-              <p className="text-xs text-white/80">Find Your Family</p>
+              <h1 className="text-xl font-bold text-white">Petsu</h1>
             </div>
           </div>
 
-          {/* Search Bar - Hidden on mobile */}
-          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-            <div className="flex gap-2 w-full">
-              <div className="flex-1 relative">
-                <Input placeholder="What are you looking for? (e.g., Golden Retriever)" className="pr-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500" />
-              </div>
-              <div className="w-48 relative">
-                
-              </div>
-              
-            </div>
-          </div>
+          {/* Navigation Menu - Hidden on mobile */}
+          <nav className="hidden md:flex items-center space-x-8 flex-1 justify-center">
+            {navItems.map((item) => (
+              <button
+                key={item.path}
+                onClick={() => navigate(item.path)}
+                className="text-white hover:text-white/80 transition-colors font-medium"
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
 
-          {/* Navigation */}
-          <nav className="flex items-center space-x-2 md:space-x-6">
+          {/* Contact & Profile Section */}
+          <div className="flex items-center space-x-3">
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="border-white/20 text-slate-800 bg-slate-50">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="hidden md:flex text-white hover:text-white hover:bg-white/10"
+                >
                   Contact
                 </Button>
               </DialogTrigger>
@@ -87,9 +101,20 @@ const Header = () => {
                 </div>
               </DialogContent>
             </Dialog>
-          </nav>
+
+            {/* Profile Icon */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-white hover:bg-white/90 text-primary w-10 h-10"
+              onClick={() => navigate('/auth')}
+            >
+              <User className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </div>
-    </header>;
+    </header>
+  );
 };
 export default Header;
