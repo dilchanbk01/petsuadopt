@@ -6,7 +6,7 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
             
-            <p className="text-muted-foreground max-w-md">Connecting loving pets with caring families. Every adoption saves a life and creates lasting bonds of love and companionship. We do not sell we just help you to find pet for adoptation</p>
+            <p className="text-muted-foreground max-w-md">Connecting loving pets with caring families. Every adoption saves a life and creates lasting bonds of love and companionship. We do not sell we just help you to find pet for adoption</p>
           </div>
 
           {/* Quick Links */}
