@@ -35,7 +35,15 @@ const Header = () => {
 
           {/* Navigation Menu - Hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-8 flex-1 justify-center">
-            {navItems.map(item => {})}
+            {navItems.map(item => (
+              <button
+                key={item.path}
+                onClick={() => navigate(item.path)}
+                className="text-white hover:text-white/80 transition-colors text-sm font-medium"
+              >
+                {item.label}
+              </button>
+            ))}
           </nav>
 
           {/* Contact & Profile Section */}
