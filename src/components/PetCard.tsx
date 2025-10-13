@@ -25,7 +25,14 @@ const PetCard = ({
   return <Card className="group overflow-hidden bg-gradient-card border-border shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer">
       {/* Image Container */}
       <div className="relative overflow-hidden">
-        <img src={image} alt={`${name} - ${breed}`} className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+        <img 
+          src={image} 
+          alt={`${name} - ${breed}`} 
+          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" 
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
+        />
         
         {/* Gender Badge */}
         <Badge className={`absolute top-3 right-3 ${gender === "Male" ? "bg-pet-male text-blue-700" : "bg-pet-female text-pink-700"}`}>
