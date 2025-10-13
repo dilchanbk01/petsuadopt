@@ -73,42 +73,6 @@ const HeroBanner = () => {
       </section>;
   }
   const currentBanner = banners[currentIndex];
-  return <section className="relative bg-gradient-hero py-16 md:py-24 border-b border-border overflow-hidden">
-      {currentBanner.image_url && <div className="absolute inset-0 z-0">
-          <img src={currentBanner.image_url} alt={currentBanner.title} className="w-full h-full object-cover opacity-20" loading="eager" fetchPriority="high" />
-        </div>}
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-foreground mb-6 animate-fade-in">
-            {currentBanner.title}
-          </h1>
-          {currentBanner.subtitle && <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 animate-fade-in">
-              {currentBanner.subtitle}
-            </p>}
-          
-          {currentBanner.cta_text && currentBanner.cta_link && <Link to={currentBanner.cta_link}>
-              <Button size="lg" className="bg-gradient-primary hover:bg-primary-dark animate-scale-in">
-                {currentBanner.cta_text}
-              </Button>
-            </Link>}
-        </div>
-      </div>
-
-      {/* Navigation Arrows */}
-      {banners.length > 1 && <>
-          <Button variant="ghost" size="icon" onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white" aria-label="Previous slide">
-            <ChevronLeft className="h-6 w-6" />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white" aria-label="Next slide">
-            <ChevronRight className="h-6 w-6" />
-          </Button>
-        </>}
-
-      {/* Dots Indicator */}
-      {banners.length > 1 && <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-          {banners.map((_, index) => <button key={index} onClick={() => setCurrentIndex(index)} className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'bg-primary w-8' : 'bg-white/50'}`} aria-label={`Go to slide ${index + 1}`} />)}
-        </div>}
-    </section>;
+  return;
 };
 export default HeroBanner;
