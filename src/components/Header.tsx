@@ -48,47 +48,8 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Contact & Profile Section */}
+          {/* Profile Icon */}
           <div className="flex items-center space-x-3">
-            <Dialog open={contactOpen} onOpenChange={setContactOpen}>
-              <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="bg-white text-primary hover:bg-white/90 hover:text-primary">
-                  Contact
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Contact Us</DialogTitle>
-                  <DialogDescription>
-                    Get in touch with us through phone or email
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <a href="tel:+15551234567" className="flex items-center space-x-3 p-4 rounded-lg border border-border hover:bg-accent transition-colors group">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Phone className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Call us</p>
-                      <p className="font-semibold group-hover:text-primary transition-colors">+1 (555) 123-4567</p>
-                    </div>
-                  </a>
-                  
-                  <a href="mailto:hello@pawshome.com" className="flex items-center space-x-3 p-4 rounded-lg border border-border hover:bg-accent transition-colors group">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Mail className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Email us</p>
-                      <p className="font-semibold group-hover:text-primary transition-colors">hello@pawshome.com</p>
-                    </div>
-                  </a>
-                </div>
-              </DialogContent>
-            </Dialog>
-
-            {/* Profile Icon */}
-            
           </div>
         </div>
       </div>

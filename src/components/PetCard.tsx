@@ -49,7 +49,7 @@ const PetCard = ({
         {/* Details */}
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>{breed}</span>
-          <span>Age: {age} {age === 1 ? 'year' : 'years'}</span>
+          <span>Age: {age} {age === 1 ? 'month' : 'months'}</span>
         </div>
 
         {/* Action Buttons */}
