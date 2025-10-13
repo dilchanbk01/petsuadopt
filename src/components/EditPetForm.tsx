@@ -17,6 +17,7 @@ interface Pet {
   age: number;
   gender: string;
   color: string;
+  location?: string;
   description?: string;
   medical_history?: string;
   image_url?: string;
@@ -38,6 +39,7 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
     age: pet.age.toString(),
     gender: pet.gender,
     color: pet.color,
+    location: pet.location || '',
     description: pet.description || '',
     medical_history: pet.medical_history || '',
     image_url: pet.image_url || ''
@@ -60,6 +62,7 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
         gender: formData.gender,
         size: 'Medium', // Default size since we removed the field
         color: formData.color,
+        location: formData.location,
         description: formData.description,
         medical_history: formData.medical_history,
         image_url: formData.image_url
@@ -178,6 +181,25 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
                 placeholder="Enter color"
                 required
               />
+            </div>
+
+            <div>
+              <Label htmlFor="location">Location</Label>
+              <Select value={formData.location} onValueChange={(value) => handleInputChange('location', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Not Specified</SelectItem>
+                  <SelectItem value="Mumbai">Mumbai</SelectItem>
+                  <SelectItem value="Delhi">Delhi</SelectItem>
+                  <SelectItem value="Bangalore">Bangalore</SelectItem>
+                  <SelectItem value="Pune">Pune</SelectItem>
+                  <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                  <SelectItem value="Chennai">Chennai</SelectItem>
+                  <SelectItem value="Kolkata">Kolkata</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

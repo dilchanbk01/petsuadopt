@@ -116,6 +116,7 @@ export type Database = {
           id: string
           image_url: string | null
           is_adopted: boolean | null
+          location: string | null
           medical_history: string | null
           name: string
           personality: Json | null
@@ -135,6 +136,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_adopted?: boolean | null
+          location?: string | null
           medical_history?: string | null
           name: string
           personality?: Json | null
@@ -154,6 +156,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_adopted?: boolean | null
+          location?: string | null
           medical_history?: string | null
           name?: string
           personality?: Json | null

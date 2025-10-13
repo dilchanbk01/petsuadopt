@@ -31,6 +31,7 @@ const AdminDashboard = () => {
     age: '',
     gender: '',
     color: '',
+    location: '',
     description: '',
     medical_history: '',
     image_url: ''
@@ -168,6 +169,7 @@ const AdminDashboard = () => {
         gender: formData.gender,
         size: 'Medium', // Default size since we removed the field
         color: formData.color,
+        location: formData.location,
         description: formData.description,
         medical_history: formData.medical_history,
         image_url: formData.image_url,
@@ -193,6 +195,7 @@ const AdminDashboard = () => {
         age: '',
         gender: '',
         color: '',
+        location: '',
         description: '',
         medical_history: '',
         image_url: ''
@@ -386,6 +389,25 @@ const AdminDashboard = () => {
                         placeholder="Enter color"
                         required
                       />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="location">Location</Label>
+                      <Select value={formData.location} onValueChange={(value) => handleInputChange('location', value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select location" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="">Not Specified</SelectItem>
+                          <SelectItem value="Mumbai">Mumbai</SelectItem>
+                          <SelectItem value="Delhi">Delhi</SelectItem>
+                          <SelectItem value="Bangalore">Bangalore</SelectItem>
+                          <SelectItem value="Pune">Pune</SelectItem>
+                          <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                          <SelectItem value="Chennai">Chennai</SelectItem>
+                          <SelectItem value="Kolkata">Kolkata</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
 

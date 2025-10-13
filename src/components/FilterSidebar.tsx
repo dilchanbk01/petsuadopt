@@ -13,6 +13,7 @@ export interface FilterState {
   age: string;
   gender: string;
   size: string;
+  location: string;
   searchQuery: string;
 }
 
@@ -87,8 +88,27 @@ const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) => {
             </Select>
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="location">Location</Label>
+            <Select value={filters.location} onValueChange={(value) => onFiltersChange({ ...filters, location: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select location" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Locations</SelectItem>
+                <SelectItem value="Mumbai">Mumbai</SelectItem>
+                <SelectItem value="Delhi">Delhi</SelectItem>
+                <SelectItem value="Bangalore">Bangalore</SelectItem>
+                <SelectItem value="Pune">Pune</SelectItem>
+                <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                <SelectItem value="Chennai">Chennai</SelectItem>
+                <SelectItem value="Kolkata">Kolkata</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
       <Button 
-        onClick={() => onFiltersChange({ species: 'All', age: 'All', gender: 'All', size: 'All', searchQuery: '' })}
+        onClick={() => onFiltersChange({ species: 'All', age: 'All', gender: 'All', size: 'All', location: 'All', searchQuery: '' })}
         variant="outline" 
         className="w-full"
       >

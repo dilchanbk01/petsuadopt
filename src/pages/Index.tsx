@@ -11,6 +11,7 @@ const Index = () => {
     age: 'All',
     gender: 'All',
     size: 'All',
+    location: 'All',
     searchQuery: ''
   });
   return <div className="min-h-screen bg-background pb-16 md:pb-0">

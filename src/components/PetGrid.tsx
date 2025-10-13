@@ -6,6 +6,7 @@ interface FilterState {
   age: string;
   gender: string;
   size: string;
+  location: string;
   searchQuery: string;
 }
 interface PetGridProps {
@@ -20,6 +21,7 @@ interface Pet {
   species: string;
   size: string;
   color: string;
+  location?: string;
   description?: string;
   adoption_fee?: number;
   image_url?: string;
@@ -81,6 +83,9 @@ const PetGrid = ({
       return false;
     }
     if (filters.size && filters.size !== 'All' && pet.size !== filters.size) {
+      return false;
+    }
+    if (filters.location && filters.location !== 'All' && pet.location !== filters.location) {
       return false;
     }
     return true;
