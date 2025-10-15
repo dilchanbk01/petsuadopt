@@ -1,12 +1,17 @@
-import { Phone, Mail, User } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import logoImage from '@/assets/logo.png';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { useState } from "react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useState, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 const Header = () => {
   const navigate = useNavigate();
-  const [contactOpen, setContactOpen] = useState(false);
+  const isMobile = useIsMobile();
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const navItems = [{
     label: 'Vet Consultation',
     url: 'https://petsu.in/vet-consultation'
@@ -20,7 +25,25 @@ const Header = () => {
     label: 'Blogs',
     url: 'https://petsu.in/blogs'
   }];
-  return <header className="bg-header-brand shadow-soft sticky top-0 z-50 rounded-full max-w-[95%] mx-auto mt-4">
+
+  useEffect(() => {
+    const controlHeader = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', controlHeader);
+    return () => window.removeEventListener('scroll', controlHeader);
+  }, [lastScrollY]);
+
+  return <header className={`bg-header-brand shadow-soft sticky top-0 z-50 rounded-full max-w-[95%] mx-auto mt-4 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="container mx-auto px-6 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -48,9 +71,32 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Profile Icon */}
-          <div className="flex items-center space-x-3">
-          </div>
+          {/* Mobile Menu */}
+          {isMobile && (
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="bg-header-brand border-none">
+                <nav className="flex flex-col space-y-6 mt-8">
+                  {navItems.map(item => (
+                    <a
+                      key={item.url}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white hover:text-white/80 transition-colors text-lg font-medium"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
       </div>
     </header>;
