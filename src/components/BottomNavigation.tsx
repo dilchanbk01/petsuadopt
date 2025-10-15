@@ -8,7 +8,7 @@ const BottomNavigation = () => {
     {
       icon: ArrowLeft,
       label: 'Back',
-      onClick: () => window.open('https://petsu.in', '_blank')
+      onClick: () => window.location.href = 'https://petsu.in'
     },
     {
       icon: Home,
