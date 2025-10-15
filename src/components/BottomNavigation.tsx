@@ -1,10 +1,15 @@
-import { Home, Heart, Scissors, ShoppingBag } from 'lucide-react';
+import { Home, Heart, Scissors, ShoppingBag, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const BottomNavigation = () => {
   const navigate = useNavigate();
 
   const navItems = [
+    {
+      icon: ArrowLeft,
+      label: 'Back',
+      onClick: () => window.open('https://petsu.in', '_blank')
+    },
     {
       icon: Home,
       label: 'Home',
