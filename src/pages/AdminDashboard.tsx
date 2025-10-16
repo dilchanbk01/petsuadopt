@@ -398,7 +398,7 @@ const AdminDashboard = () => {
                           <SelectValue placeholder="Select location" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Not Specified</SelectItem>
+                          <SelectItem value="not_specified">Not Specified</SelectItem>
                           <SelectItem value="Mumbai">Mumbai</SelectItem>
                           <SelectItem value="Delhi">Delhi</SelectItem>
                           <SelectItem value="Bangalore">Bangalore</SelectItem>
