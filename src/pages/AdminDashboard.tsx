@@ -14,14 +14,21 @@ import { PlusCircle, Users, Heart, ArrowLeft, LogOut, Trash2, MessageCircle, Che
 import logoImage from '@/assets/logo.png';
 import EditPetForm from '@/components/EditPetForm';
 import HeroBannerManager from '@/components/HeroBannerManager';
-
 const AdminDashboard = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [activeTab, setActiveTab] = useState('overview');
   const [submitting, setSubmitting] = useState(false);
-  const [stats, setStats] = useState({ total: 0, adopted: 0, available: 0 });
+  const [stats, setStats] = useState({
+    total: 0,
+    adopted: 0,
+    available: 0
+  });
   const [pets, setPets] = useState([]);
   const [adoptionRequests, setAdoptionRequests] = useState([]);
   const [formData, setFormData] = useState({
@@ -36,7 +43,6 @@ const AdminDashboard = () => {
     medical_history: '',
     image_url: ''
   });
-
   useEffect(() => {
     if (user) {
       fetchStats();
@@ -44,27 +50,32 @@ const AdminDashboard = () => {
       fetchAdoptionRequests();
     }
   }, [user]);
-
   const fetchStats = async () => {
     try {
-      const { data: allPets } = await supabase.from('pets').select('is_adopted');
+      const {
+        data: allPets
+      } = await supabase.from('pets').select('is_adopted');
       if (allPets) {
         const total = allPets.length;
         const adopted = allPets.filter(pet => pet.is_adopted).length;
         const available = total - adopted;
-        setStats({ total, adopted, available });
+        setStats({
+          total,
+          adopted,
+          available
+        });
       }
     } catch (error) {
       console.error('Error fetching stats:', error);
     }
   };
-
   const fetchPets = async () => {
     try {
-      const { data: allPets } = await supabase
-        .from('pets')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const {
+        data: allPets
+      } = await supabase.from('pets').select('*').order('created_at', {
+        ascending: false
+      });
       if (allPets) {
         setPets(allPets);
       }
@@ -72,23 +83,17 @@ const AdminDashboard = () => {
       console.error('Error fetching pets:', error);
     }
   };
-
   const deletePet = async (petId: string) => {
     if (!confirm('Are you sure you want to delete this pet?')) return;
-    
     try {
-      const { error } = await supabase
-        .from('pets')
-        .delete()
-        .eq('id', petId);
-
+      const {
+        error
+      } = await supabase.from('pets').delete().eq('id', petId);
       if (error) throw error;
-
       toast({
         title: "Success!",
-        description: "Pet has been deleted successfully.",
+        description: "Pet has been deleted successfully."
       });
-
       fetchStats();
       fetchPets();
     } catch (error) {
@@ -100,38 +105,35 @@ const AdminDashboard = () => {
       });
     }
   };
-
   const fetchAdoptionRequests = async () => {
     try {
-      const { data, error } = await supabase
-        .from('adoption_requests')
-        .select(`
+      const {
+        data,
+        error
+      } = await supabase.from('adoption_requests').select(`
           *,
           pets (name, breed, species)
-        `)
-        .order('created_at', { ascending: false });
-
+        `).order('created_at', {
+        ascending: false
+      });
       if (error) throw error;
       setAdoptionRequests(data || []);
     } catch (error) {
       console.error('Error fetching adoption requests:', error);
     }
   };
-
   const updateAdoptionStatus = async (requestId: string, status: string) => {
     try {
-      const { error } = await supabase
-        .from('adoption_requests')
-        .update({ status })
-        .eq('id', requestId);
-
+      const {
+        error
+      } = await supabase.from('adoption_requests').update({
+        status
+      }).eq('id', requestId);
       if (error) throw error;
-
       toast({
         title: "Success!",
-        description: `Adoption request ${status} successfully.`,
+        description: `Adoption request ${status} successfully.`
       });
-
       fetchAdoptionRequests();
     } catch (error) {
       console.error('Error updating adoption request:', error);
@@ -142,24 +144,22 @@ const AdminDashboard = () => {
       });
     }
   };
-
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate('/admin-auth');
   };
-
   if (!user) {
     return <Navigate to="/admin-auth" replace />;
   }
-
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-
     try {
       const petData = {
         name: formData.name,
@@ -167,7 +167,8 @@ const AdminDashboard = () => {
         breed: formData.breed,
         age: parseInt(formData.age),
         gender: formData.gender,
-        size: 'Medium', // Default size since we removed the field
+        size: 'Medium',
+        // Default size since we removed the field
         color: formData.color,
         location: formData.location,
         description: formData.description,
@@ -175,16 +176,13 @@ const AdminDashboard = () => {
         image_url: formData.image_url,
         created_by: user.id
       };
-
-      const { error } = await supabase
-        .from('pets')
-        .insert(petData);
-
+      const {
+        error
+      } = await supabase.from('pets').insert(petData);
       if (error) throw error;
-
       toast({
         title: "Success!",
-        description: "Pet has been added successfully.",
+        description: "Pet has been added successfully."
       });
 
       // Reset form
@@ -215,9 +213,7 @@ const AdminDashboard = () => {
       setSubmitting(false);
     }
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-card border-b border-border shadow-soft">
         <div className="container mx-auto px-4 py-4">
@@ -232,15 +228,12 @@ const AdminDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <Button variant="outline" size="sm" onClick={() => navigate('/')}>
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                <span className="hidden sm:inline">Back to Home</span>
-                <span className="sm:hidden">Home</span>
-              </Button>
+              
               <Button variant="outline" size="sm" onClick={handleSignOut}>
                 <LogOut className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Sign Out</span>
-                <span className="sm:hidden">Out</span>
+                <span className="sm:hidden">Logout
+              </span>
               </Button>
             </div>
           </div>
@@ -248,10 +241,7 @@ const AdminDashboard = () => {
       </div>
 
       <div className="container mx-auto px-4 py-6 sm:py-8">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Pet Management</h1>
-          <p className="text-muted-foreground">Manage pets, adoption requests, and website content</p>
-        </div>
+        
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
@@ -319,18 +309,12 @@ const AdminDashboard = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <Label htmlFor="name">Pet Name *</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => handleInputChange('name', e.target.value)}
-                        placeholder="Enter pet name"
-                        required
-                      />
+                      <Input id="name" value={formData.name} onChange={e => handleInputChange('name', e.target.value)} placeholder="Enter pet name" required />
                     </div>
 
                     <div>
                       <Label htmlFor="species">Species *</Label>
-                      <Select value={formData.species} onValueChange={(value) => handleInputChange('species', value)}>
+                      <Select value={formData.species} onValueChange={value => handleInputChange('species', value)}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select species" />
                         </SelectTrigger>
@@ -346,30 +330,17 @@ const AdminDashboard = () => {
 
                     <div>
                       <Label htmlFor="breed">Breed *</Label>
-                      <Input
-                        id="breed"
-                        value={formData.breed}
-                        onChange={(e) => handleInputChange('breed', e.target.value)}
-                        placeholder="Enter breed"
-                        required
-                      />
+                      <Input id="breed" value={formData.breed} onChange={e => handleInputChange('breed', e.target.value)} placeholder="Enter breed" required />
                     </div>
 
                     <div>
                       <Label htmlFor="age">Age (in months) *</Label>
-                      <Input
-                        id="age"
-                        type="number"
-                        value={formData.age}
-                        onChange={(e) => handleInputChange('age', e.target.value)}
-                        placeholder="Enter age in months"
-                        required
-                      />
+                      <Input id="age" type="number" value={formData.age} onChange={e => handleInputChange('age', e.target.value)} placeholder="Enter age in months" required />
                     </div>
 
                     <div>
                       <Label htmlFor="gender">Gender *</Label>
-                      <Select value={formData.gender} onValueChange={(value) => handleInputChange('gender', value)}>
+                      <Select value={formData.gender} onValueChange={value => handleInputChange('gender', value)}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
@@ -382,18 +353,12 @@ const AdminDashboard = () => {
 
                     <div>
                       <Label htmlFor="color">Color *</Label>
-                      <Input
-                        id="color"
-                        value={formData.color}
-                        onChange={(e) => handleInputChange('color', e.target.value)}
-                        placeholder="Enter color"
-                        required
-                      />
+                      <Input id="color" value={formData.color} onChange={e => handleInputChange('color', e.target.value)} placeholder="Enter color" required />
                     </div>
 
                     <div>
                       <Label htmlFor="location">Location</Label>
-                      <Select value={formData.location} onValueChange={(value) => handleInputChange('location', value)}>
+                      <Select value={formData.location} onValueChange={value => handleInputChange('location', value)}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select location" />
                         </SelectTrigger>
@@ -413,34 +378,17 @@ const AdminDashboard = () => {
 
                   <div>
                     <Label htmlFor="image_url">Image URL</Label>
-                    <Input
-                      id="image_url"
-                      value={formData.image_url}
-                      onChange={(e) => handleInputChange('image_url', e.target.value)}
-                      placeholder="Enter image URL"
-                    />
+                    <Input id="image_url" value={formData.image_url} onChange={e => handleInputChange('image_url', e.target.value)} placeholder="Enter image URL" />
                   </div>
 
                   <div>
                     <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      value={formData.description}
-                      onChange={(e) => handleInputChange('description', e.target.value)}
-                      placeholder="Describe the pet's personality and characteristics"
-                      rows={3}
-                    />
+                    <Textarea id="description" value={formData.description} onChange={e => handleInputChange('description', e.target.value)} placeholder="Describe the pet's personality and characteristics" rows={3} />
                   </div>
 
                   <div>
                     <Label htmlFor="medical_history">Medical History</Label>
-                    <Textarea
-                      id="medical_history"
-                      value={formData.medical_history}
-                      onChange={(e) => handleInputChange('medical_history', e.target.value)}
-                      placeholder="Enter any medical history or special needs"
-                      rows={3}
-                    />
+                    <Textarea id="medical_history" value={formData.medical_history} onChange={e => handleInputChange('medical_history', e.target.value)} placeholder="Enter any medical history or special needs" rows={3} />
                   </div>
 
                   <Button type="submit" disabled={submitting} className="w-full bg-gradient-primary hover:bg-primary-dark">
@@ -458,17 +406,9 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {pets.map((pet) => (
-                    <div key={pet.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border border-border rounded-lg gap-4">
+                  {pets.map(pet => <div key={pet.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border border-border rounded-lg gap-4">
                       <div className="flex items-center space-x-4 flex-1 min-w-0">
-                        {pet.image_url && (
-                          <img 
-                            src={pet.image_url} 
-                            alt={pet.name} 
-                            className="w-16 h-16 object-cover rounded-lg flex-shrink-0" 
-                            loading="lazy"
-                          />
-                        )}
+                        {pet.image_url && <img src={pet.image_url} alt={pet.name} className="w-16 h-16 object-cover rounded-lg flex-shrink-0" loading="lazy" />}
                         <div className="min-w-0 flex-1">
                           <h3 className="font-semibold text-foreground truncate">{pet.name}</h3>
                           <p className="text-sm text-muted-foreground">{pet.breed} • {pet.species} • {pet.age} months • {pet.gender}</p>
@@ -477,21 +417,13 @@ const AdminDashboard = () => {
                       </div>
                       <div className="flex gap-2 flex-shrink-0">
                         <EditPetForm pet={pet} onPetUpdated={fetchPets} />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => deletePet(pet.id)}
-                          className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
-                        >
+                        <Button variant="outline" size="sm" onClick={() => deletePet(pet.id)} className="text-destructive hover:text-destructive-foreground hover:bg-destructive">
                           <Trash2 className="w-4 h-4 mr-2" />
                           Delete
                         </Button>
                       </div>
-                    </div>
-                  ))}
-                  {pets.length === 0 && (
-                    <p className="text-center text-muted-foreground py-8">No pets found. Add your first pet to get started.</p>
-                  )}
+                    </div>)}
+                  {pets.length === 0 && <p className="text-center text-muted-foreground py-8">No pets found. Add your first pet to get started.</p>}
                 </div>
               </CardContent>
             </Card>
@@ -504,8 +436,7 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {adoptionRequests.map((request) => (
-                    <div key={request.id} className="p-4 border border-border rounded-lg">
+                  {adoptionRequests.map(request => <div key={request.id} className="p-4 border border-border rounded-lg">
                       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-3">
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-foreground">
@@ -517,79 +448,51 @@ const AdminDashboard = () => {
                           <div className="mt-2 text-sm space-y-1">
                             <p><strong>Email:</strong> <span className="break-all">{request.adopter_email}</span></p>
                             <p><strong>Phone:</strong> {request.adopter_phone}</p>
-                            {request.adopter_address && (
-                              <p><strong>Address:</strong> {request.adopter_address}</p>
-                            )}
+                            {request.adopter_address && <p><strong>Address:</strong> {request.adopter_address}</p>}
                           </div>
                         </div>
                         <div className="flex gap-2 flex-shrink-0">
-                          {request.status === 'pending' && (
-                            <>
-                              <Button
-                                size="sm"
-                                onClick={() => updateAdoptionStatus(request.id, 'approved')}
-                                className="bg-green-600 hover:bg-green-700 text-white"
-                              >
+                          {request.status === 'pending' && <>
+                              <Button size="sm" onClick={() => updateAdoptionStatus(request.id, 'approved')} className="bg-green-600 hover:bg-green-700 text-white">
                                 <CheckCircle className="w-4 h-4 mr-1" />
                                 <span className="hidden sm:inline">Approve</span>
                               </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => updateAdoptionStatus(request.id, 'rejected')}
-                                className="text-red-600 border-red-600 hover:bg-red-50"
-                              >
+                              <Button size="sm" variant="outline" onClick={() => updateAdoptionStatus(request.id, 'rejected')} className="text-red-600 border-red-600 hover:bg-red-50">
                                 <XCircle className="w-4 h-4 mr-1" />
                                 <span className="hidden sm:inline">Reject</span>
                               </Button>
-                            </>
-                          )}
-                          {request.status !== 'pending' && (
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${
-                              request.status === 'approved' 
-                                ? 'bg-green-100 text-green-800' 
-                                : 'bg-red-100 text-red-800'
-                            }`}>
+                            </>}
+                          {request.status !== 'pending' && <span className={`px-2 py-1 rounded text-xs font-medium ${request.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                               {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
-                            </span>
-                          )}
+                            </span>}
                         </div>
                       </div>
                       
-                      {request.adoption_reason && (
-                        <div className="mt-3 p-3 bg-muted rounded">
+                      {request.adoption_reason && <div className="mt-3 p-3 bg-muted rounded">
                           <p className="text-sm"><strong>Why they want to adopt:</strong></p>
                           <p className="text-sm text-muted-foreground mt-1">{request.adoption_reason}</p>
-                        </div>
-                      )}
+                        </div>}
                       
-                      {request.experience_with_pets && (
-                        <div className="mt-3 p-3 bg-muted rounded">
+                      {request.experience_with_pets && <div className="mt-3 p-3 bg-muted rounded">
                           <p className="text-sm"><strong>Pet experience:</strong></p>
                           <p className="text-sm text-muted-foreground mt-1">{request.experience_with_pets}</p>
-                        </div>
-                      )}
+                        </div>}
                       
                       <p className="text-xs text-muted-foreground mt-3">
                         Submitted on {new Date(request.created_at).toLocaleDateString()}
                       </p>
-                    </div>
-                  ))}
-                  {adoptionRequests.length === 0 && (
-                    <p className="text-center text-muted-foreground py-8">No adoption requests yet</p>
-                  )}
+                    </div>)}
+                  {adoptionRequests.length === 0 && <p className="text-center text-muted-foreground py-8">No adoption requests yet</p>}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="banners" className="space-y-6">
-            <HeroBannerManager />
+            
           </TabsContent>
         </Tabs>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default AdminDashboard;
