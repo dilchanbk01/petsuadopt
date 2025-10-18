@@ -24,7 +24,7 @@ interface Pet {
   location?: string;
   description?: string;
   adoption_fee?: number;
-  image_url?: string;
+  images?: string[];
   is_adopted: boolean;
 }
 const PetGrid = ({
@@ -45,7 +45,14 @@ const PetGrid = ({
         ascending: false
       });
       if (error) throw error;
-      setPets(data || []);
+      
+      if (data) {
+        const petsWithImages = data.map(pet => ({
+          ...pet,
+          images: Array.isArray(pet.images) ? pet.images : []
+        })) as Pet[];
+        setPets(petsWithImages);
+      }
     } catch (error) {
       console.error('Error fetching pets:', error);
     } finally {
@@ -106,7 +113,7 @@ const PetGrid = ({
       
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredPets.map(pet => <PetCard key={pet.id} id={pet.id} name={pet.name} breed={pet.breed} age={pet.age} gender={pet.gender} image={pet.image_url || '/placeholder.svg'} isFavorite={favorites.includes(pet.id)} onToggleFavorite={() => toggleFavorite(pet.id)} />)}
+        {filteredPets.map(pet => <PetCard key={pet.id} id={pet.id} name={pet.name} breed={pet.breed} age={pet.age} gender={pet.gender} image={(pet.images && pet.images[0]) || '/placeholder.svg'} isFavorite={favorites.includes(pet.id)} onToggleFavorite={() => toggleFavorite(pet.id)} />)}
       </div>
 
       {filteredPets.length === 0 && <div className="text-center py-12">
