@@ -20,7 +20,7 @@ interface Pet {
   location?: string;
   description?: string;
   medical_history?: string;
-  image_url?: string;
+  images?: string[];
 }
 
 interface EditPetFormProps {
@@ -42,7 +42,7 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
     location: pet.location || '',
     description: pet.description || '',
     medical_history: pet.medical_history || '',
-    image_url: pet.image_url || ''
+    images: pet.images && pet.images.length > 0 ? pet.images : ['']
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -60,12 +60,12 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
         breed: formData.breed,
         age: parseInt(formData.age),
         gender: formData.gender,
-        size: 'Medium', // Default size since we removed the field
+        size: 'Medium',
         color: formData.color,
         location: formData.location,
         description: formData.description,
         medical_history: formData.medical_history,
-        image_url: formData.image_url
+        images: formData.images.filter(url => url.trim() !== '')
       };
 
       const { error } = await supabase
@@ -204,13 +204,43 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
           </div>
 
           <div>
-            <Label htmlFor="image_url">Image URL</Label>
-            <Input
-              id="image_url"
-              value={formData.image_url}
-              onChange={(e) => handleInputChange('image_url', e.target.value)}
-              placeholder="Enter image URL"
-            />
+            <Label>Image URLs (Multiple allowed)</Label>
+            <div className="space-y-2">
+              {formData.images.map((url, index) => (
+                <div key={index} className="flex gap-2">
+                  <Input
+                    value={url}
+                    onChange={(e) => {
+                      const newImages = [...formData.images];
+                      newImages[index] = e.target.value;
+                      setFormData(prev => ({ ...prev, images: newImages }));
+                    }}
+                    placeholder={`Image URL ${index + 1}`}
+                  />
+                  {index === formData.images.length - 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setFormData(prev => ({ ...prev, images: [...prev.images, ''] }))}
+                    >
+                      +
+                    </Button>
+                  )}
+                  {formData.images.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        const newImages = formData.images.filter((_, i) => i !== index);
+                        setFormData(prev => ({ ...prev, images: newImages }));
+                      }}
+                    >
+                      -
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div>

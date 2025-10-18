@@ -114,7 +114,7 @@ export type Database = {
           description: string | null
           gender: string
           id: string
-          image_url: string | null
+          images: Json | null
           is_adopted: boolean | null
           location: string | null
           medical_history: string | null
@@ -134,7 +134,7 @@ export type Database = {
           description?: string | null
           gender: string
           id?: string
-          image_url?: string | null
+          images?: Json | null
           is_adopted?: boolean | null
           location?: string | null
           medical_history?: string | null
@@ -154,7 +154,7 @@ export type Database = {
           description?: string | null
           gender?: string
           id?: string
-          image_url?: string | null
+          images?: Json | null
           is_adopted?: boolean | null
           location?: string | null
           medical_history?: string | null

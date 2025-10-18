@@ -41,7 +41,7 @@ const AdminDashboard = () => {
     location: '',
     description: '',
     medical_history: '',
-    image_url: ''
+    images: ['']
   });
   useEffect(() => {
     if (user) {
@@ -168,12 +168,11 @@ const AdminDashboard = () => {
         age: parseInt(formData.age),
         gender: formData.gender,
         size: 'Medium',
-        // Default size since we removed the field
         color: formData.color,
         location: formData.location,
         description: formData.description,
         medical_history: formData.medical_history,
-        image_url: formData.image_url,
+        images: formData.images.filter(url => url.trim() !== ''),
         created_by: user.id
       };
       const {
@@ -196,7 +195,7 @@ const AdminDashboard = () => {
         location: '',
         description: '',
         medical_history: '',
-        image_url: ''
+        images: ['']
       });
 
       // Refresh stats and pets list
@@ -377,8 +376,43 @@ const AdminDashboard = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="image_url">Image URL</Label>
-                    <Input id="image_url" value={formData.image_url} onChange={e => handleInputChange('image_url', e.target.value)} placeholder="Enter image URL" />
+                    <Label>Image URLs (Multiple allowed)</Label>
+                    <div className="space-y-2">
+                      {formData.images.map((url, index) => (
+                        <div key={index} className="flex gap-2">
+                          <Input
+                            value={url}
+                            onChange={(e) => {
+                              const newImages = [...formData.images];
+                              newImages[index] = e.target.value;
+                              setFormData(prev => ({ ...prev, images: newImages }));
+                            }}
+                            placeholder={`Image URL ${index + 1}`}
+                          />
+                          {index === formData.images.length - 1 && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => setFormData(prev => ({ ...prev, images: [...prev.images, ''] }))}
+                            >
+                              +
+                            </Button>
+                          )}
+                          {formData.images.length > 1 && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => {
+                                const newImages = formData.images.filter((_, i) => i !== index);
+                                setFormData(prev => ({ ...prev, images: newImages }));
+                              }}
+                            >
+                              -
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   <div>
@@ -408,7 +442,7 @@ const AdminDashboard = () => {
                 <div className="space-y-4">
                   {pets.map(pet => <div key={pet.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border border-border rounded-lg gap-4">
                       <div className="flex items-center space-x-4 flex-1 min-w-0">
-                        {pet.image_url && <img src={pet.image_url} alt={pet.name} className="w-16 h-16 object-cover rounded-lg flex-shrink-0" loading="lazy" />}
+                        {pet.images?.[0] && <img src={pet.images[0]} alt={pet.name} className="w-16 h-16 object-cover object-top rounded-lg flex-shrink-0" loading="lazy" />}
                         <div className="min-w-0 flex-1">
                           <h3 className="font-semibold text-foreground truncate">{pet.name}</h3>
                           <p className="text-sm text-muted-foreground">{pet.breed} • {pet.species} • {pet.age} months • {pet.gender}</p>

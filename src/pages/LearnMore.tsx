@@ -9,6 +9,13 @@ import { useEffect, useState } from 'react';
 import logoImage from '@/assets/logo.png';
 import AdoptionForm from '@/components/AdoptionForm';
 import BottomNavigation from '@/components/BottomNavigation';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface Pet {
   id: string;
@@ -20,7 +27,7 @@ interface Pet {
   color: string;
   description?: string;
   medical_history?: string;
-  image_url?: string;
+  images?: string[];
   is_adopted: boolean;
 }
 
@@ -45,7 +52,13 @@ const LearnMore = () => {
         .maybeSingle();
 
       if (error) throw error;
-      setPet(data);
+      
+      if (data) {
+        setPet({
+          ...data,
+          images: Array.isArray(data.images) ? data.images : []
+        } as Pet);
+      }
     } catch (error) {
       console.error('Error fetching pet:', error);
     } finally {
@@ -100,16 +113,35 @@ const LearnMore = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Pet Image */}
+            {/* Pet Image Carousel */}
             <div className="relative">
               <div className="aspect-square overflow-hidden rounded-2xl bg-card">
-                {pet.image_url ? (
-                  <img
-                    src={pet.image_url}
-                    alt={`${pet.name} - ${pet.breed}`}
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                  />
+                {pet.images && pet.images.length > 0 ? (
+                  pet.images.length === 1 ? (
+                    <img
+                      src={pet.images[0]}
+                      alt={`${pet.name} - ${pet.breed}`}
+                      className="w-full h-full object-cover object-top"
+                      loading="eager"
+                    />
+                  ) : (
+                    <Carousel className="w-full h-full">
+                      <CarouselContent>
+                        {pet.images.map((image, index) => (
+                          <CarouselItem key={index}>
+                            <img
+                              src={image}
+                              alt={`${pet.name} - ${pet.breed} ${index + 1}`}
+                              className="w-full h-full object-cover object-top"
+                              loading={index === 0 ? "eager" : "lazy"}
+                            />
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious className="left-2" />
+                      <CarouselNext className="right-2" />
+                    </Carousel>
+                  )
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-muted">
                     <Heart className="w-16 h-16 text-muted-foreground" />
