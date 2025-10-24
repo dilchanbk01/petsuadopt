@@ -119,6 +119,8 @@ export type Database = {
           location: string | null
           medical_history: string | null
           name: string
+          owner_name: string | null
+          owner_phone: string | null
           personality: Json | null
           size: string
           species: string
@@ -139,6 +141,8 @@ export type Database = {
           location?: string | null
           medical_history?: string | null
           name: string
+          owner_name?: string | null
+          owner_phone?: string | null
           personality?: Json | null
           size: string
           species: string
@@ -159,6 +163,8 @@ export type Database = {
           location?: string | null
           medical_history?: string | null
           name?: string
+          owner_name?: string | null
+          owner_phone?: string | null
           personality?: Json | null
           size?: string
           species?: string

@@ -41,7 +41,9 @@ const AdminDashboard = () => {
     location: '',
     description: '',
     medical_history: '',
-    images: ['']
+    images: [''],
+    owner_name: '',
+    owner_phone: ''
   });
   useEffect(() => {
     if (user) {
@@ -173,6 +175,8 @@ const AdminDashboard = () => {
         description: formData.description,
         medical_history: formData.medical_history,
         images: formData.images.filter(url => url.trim() !== ''),
+        owner_name: formData.owner_name || null,
+        owner_phone: formData.owner_phone || null,
         created_by: user.id
       };
       const {
@@ -195,7 +199,9 @@ const AdminDashboard = () => {
         location: '',
         description: '',
         medical_history: '',
-        images: ['']
+        images: [''],
+        owner_name: '',
+        owner_phone: ''
       });
 
       // Refresh stats and pets list
@@ -423,6 +429,37 @@ const AdminDashboard = () => {
                   <div>
                     <Label htmlFor="medical_history">Medical History</Label>
                     <Textarea id="medical_history" value={formData.medical_history} onChange={e => handleInputChange('medical_history', e.target.value)} placeholder="Enter any medical history or special needs" rows={3} />
+                  </div>
+
+                  {/* Owner Details Section */}
+                  <div className="border-t pt-6 space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-1">Owner Details (Private - Admin Only)</h3>
+                      <p className="text-sm text-muted-foreground">This information is not shown to users</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="owner_name">Owner Name</Label>
+                        <Input 
+                          id="owner_name" 
+                          value={formData.owner_name} 
+                          onChange={e => handleInputChange('owner_name', e.target.value)} 
+                          placeholder="Enter owner's name" 
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="owner_phone">Owner Phone</Label>
+                        <Input 
+                          id="owner_phone" 
+                          type="tel"
+                          value={formData.owner_phone} 
+                          onChange={e => handleInputChange('owner_phone', e.target.value)} 
+                          placeholder="Enter owner's phone number" 
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <Button type="submit" disabled={submitting} className="w-full bg-gradient-primary hover:bg-primary-dark">

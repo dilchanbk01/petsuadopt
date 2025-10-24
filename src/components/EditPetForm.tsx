@@ -21,6 +21,8 @@ interface Pet {
   description?: string;
   medical_history?: string;
   images?: string[];
+  owner_name?: string;
+  owner_phone?: string;
 }
 
 interface EditPetFormProps {
@@ -42,7 +44,9 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
     location: pet.location || '',
     description: pet.description || '',
     medical_history: pet.medical_history || '',
-    images: pet.images && pet.images.length > 0 ? pet.images : ['']
+    images: pet.images && pet.images.length > 0 ? pet.images : [''],
+    owner_name: pet.owner_name || '',
+    owner_phone: pet.owner_phone || ''
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -65,7 +69,9 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
         location: formData.location,
         description: formData.description,
         medical_history: formData.medical_history,
-        images: formData.images.filter(url => url.trim() !== '')
+        images: formData.images.filter(url => url.trim() !== ''),
+        owner_name: formData.owner_name || null,
+        owner_phone: formData.owner_phone || null
       };
 
       const { error } = await supabase
@@ -263,6 +269,37 @@ const EditPetForm = ({ pet, onPetUpdated }: EditPetFormProps) => {
               placeholder="Enter any medical history or special needs"
               rows={3}
             />
+          </div>
+
+          {/* Owner Details Section */}
+          <div className="border-t pt-4 space-y-4">
+            <div>
+              <h3 className="font-semibold mb-1">Owner Details (Private - Admin Only)</h3>
+              <p className="text-sm text-muted-foreground">This information is not shown to users</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="owner_name">Owner Name</Label>
+                <Input
+                  id="owner_name"
+                  value={formData.owner_name}
+                  onChange={(e) => handleInputChange('owner_name', e.target.value)}
+                  placeholder="Enter owner's name"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="owner_phone">Owner Phone</Label>
+                <Input
+                  id="owner_phone"
+                  type="tel"
+                  value={formData.owner_phone}
+                  onChange={(e) => handleInputChange('owner_phone', e.target.value)}
+                  placeholder="Enter owner's phone"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-3 pt-4">
