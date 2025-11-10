@@ -41,9 +41,9 @@ const PetGrid = ({
       const {
         data,
         error
-      } = await supabase.from('pets').select('*').eq('is_adopted', false).order('created_at', {
+      } = await supabase.from('pets').select('id, name, breed, age, gender, species, size, location, images, is_adopted').eq('is_adopted', false).order('created_at', {
         ascending: false
-      });
+      }).limit(50);
       if (error) throw error;
       
       if (data) {
@@ -113,7 +113,7 @@ const PetGrid = ({
       
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredPets.map(pet => <PetCard key={pet.id} id={pet.id} name={pet.name} breed={pet.breed} age={pet.age} gender={pet.gender} image={(pet.images && pet.images[0]) || '/placeholder.svg'} isFavorite={favorites.includes(pet.id)} onToggleFavorite={() => toggleFavorite(pet.id)} />)}
+        {filteredPets.map(pet => <PetCard key={pet.id} id={pet.id} name={pet.name} breed={pet.breed} age={pet.age} gender={pet.gender} location={pet.location} image={(pet.images && pet.images[0]) || '/placeholder.svg'} isFavorite={favorites.includes(pet.id)} onToggleFavorite={() => toggleFavorite(pet.id)} />)}
       </div>
 
       {filteredPets.length === 0 && <div className="text-center py-12">

@@ -9,6 +9,7 @@ interface PetCardProps {
   age: number;
   gender: string;
   image: string;
+  location?: string;
   isFavorite: boolean;
   onToggleFavorite: () => void;
 }
@@ -19,6 +20,7 @@ const PetCard = ({
   age,
   gender,
   image,
+  location,
   isFavorite,
   onToggleFavorite
 }: PetCardProps) => {
@@ -58,6 +60,14 @@ const PetCard = ({
           <span>{breed}</span>
           <span>Age: {age} {age === 1 ? 'month' : 'months'}</span>
         </div>
+
+        {/* Location */}
+        {location && location !== 'not_specified' && (
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <MapPin className="w-4 h-4" />
+            <span>{location}</span>
+          </div>
+        )}
 
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">

@@ -4,9 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Heart, Phone, Mail } from 'lucide-react';
+import { Heart, Phone, Mail, CheckCircle } from 'lucide-react';
 
 interface AdoptionFormProps {
   petId: string;
@@ -17,6 +18,7 @@ interface AdoptionFormProps {
 const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     adopter_name: '',
@@ -54,11 +56,6 @@ const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
         }
       });
 
-      toast({
-        title: "Adoption Request Submitted!",
-        description: `Your adoption request for ${petName} has been submitted successfully. We'll contact you soon!`,
-      });
-
       // Reset form and close dialog
       setFormData({
         adopter_name: '',
@@ -66,6 +63,7 @@ const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
         adopter_phone: ''
       });
       setOpen(false);
+      setSuccessOpen(true);
     } catch (error) {
       console.error('Error submitting adoption request:', error);
       toast({
@@ -79,10 +77,11 @@ const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          {children}
+        </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -157,6 +156,34 @@ const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
         </form>
       </DialogContent>
     </Dialog>
+
+    <AlertDialog open={successOpen} onOpenChange={setSuccessOpen}>
+      <AlertDialogContent className="max-w-md">
+        <AlertDialogHeader>
+          <div className="flex justify-center mb-4">
+            <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
+              <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
+            </div>
+          </div>
+          <AlertDialogTitle className="text-center text-2xl">
+            Adoption Request Submitted!
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-center text-base pt-2">
+            Your adoption request for <span className="font-semibold text-foreground">{petName}</span> has been submitted successfully. 
+            Our team will review your application and contact you soon at <span className="font-semibold text-foreground">{formData.adopter_email}</span>.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="sm:justify-center">
+          <Button 
+            onClick={() => setSuccessOpen(false)}
+            className="w-full sm:w-auto bg-gradient-primary hover:bg-primary-dark"
+          >
+            Got it, thanks!
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    </>
   );
 };
 
