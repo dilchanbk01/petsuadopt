@@ -44,6 +44,16 @@ const AdoptionForm = ({ petId, petName, children }: AdoptionFormProps) => {
 
       if (error) throw error;
 
+      // Send email notification to admin
+      await supabase.functions.invoke('send-adoption-notification', {
+        body: {
+          petName,
+          adopter_name: formData.adopter_name,
+          adopter_email: formData.adopter_email,
+          adopter_phone: formData.adopter_phone
+        }
+      });
+
       toast({
         title: "Adoption Request Submitted!",
         description: `Your adoption request for ${petName} has been submitted successfully. We'll contact you soon!`,
